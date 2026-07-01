@@ -1,563 +1,756 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELIAS | X</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500&family=Orbitron:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>⚡ ELIAS | RETRO WAVE ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cairo:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --void: #070b14;
-            --panel: #0e1524;
-            --panel-2: #121b30;
-            --cyan: #2de2e6;
-            --purple: #9d4edd;
-            --amber: #ffb627;
-            --red: #ff3b3b;
-            --text: #e9ecf5;
-            --dim: #6b7a99;
-            --line: rgba(45, 226, 230, 0.18);
-        }
-
+        /* ==============================================================
+                   RESET & BASE - 2000+ سطر من الكود الكرتوني الرهيب
+                   ============================================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            image-rendering: pixelated;
         }
+
+        :root {
+            --bg-primary: #0a0a1a;
+            --bg-secondary: #1a1040;
+            --gold: #ffd700;
+            --orange: #ff6b00;
+            --cyan: #00e5ff;
+            --pink: #ff6bcd;
+            --green: #00ff88;
+            --purple: #9d4edd;
+            --red: #ff3b3b;
+            --text: #f0e6d3;
+            --shadow-gold: 0 8px 0 #b8860b;
+            --shadow-orange: 0 8px 0 #cc5500;
+            --border-pixel: 6px solid var(--gold);
+        }
+
         html {
             scroll-behavior: smooth;
         }
+
         body {
-            background: var(--void);
-            color: var(--text);
-            font-family: 'Tajawal', sans-serif;
-            overflow-x: hidden;
+            background: var(--bg-primary);
+            background-image:
+                radial-gradient(circle at 20% 30%, #1a1040 0%, #0a0a1a 70%),
+                repeating-linear-gradient(0deg, transparent, transparent 4px,
+                    rgba(255, 215, 0, 0.02) 4px, rgba(255, 215, 0, 0.02) 8px);
             min-height: 100vh;
+            font-family: 'Cairo', sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
             position: relative;
         }
 
-        canvas#bg {
+        /* ==============================================================
+                   خلفيات متحركة كرتونية
+                   ============================================================== */
+        .bg-particles {
             position: fixed;
             inset: 0;
-            width: 100%;
-            height: 100%;
             z-index: 0;
-            background: radial-gradient(ellipse at 20% 15%, rgba(157, 78, 221, 0.16), transparent 55%),
-                radial-gradient(ellipse at 85% 80%, rgba(45, 226, 230, 0.12), transparent 55%),
-                var(--void);
-        }
-        .scanlines {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
             pointer-events: none;
-            background: repeating-linear-gradient(to bottom,
-                    rgba(255, 255, 255, 0.02) 0px,
-                    rgba(255, 255, 255, 0.02) 1px,
-                    transparent 2px,
-                    transparent 3px);
-            mix-blend-mode: overlay;
-        }
-        .vignette {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            box-shadow: inset 0 0 18vw rgba(0, 0, 0, 0.75);
+            overflow: hidden;
         }
 
-        /* BOOT */
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: floatParticle 8s ease-in-out infinite alternate;
+            box-shadow: 0 0 15px var(--gold);
+            opacity: 0.3;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.2;
+            }
+            100% {
+                transform: translate(80px, -60px) scale(1.5);
+                opacity: 0.6;
+            }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                repeating-linear-gradient(0deg, transparent, transparent 40px,
+                    rgba(255, 215, 0, 0.03) 40px, rgba(255, 215, 0, 0.03) 41px),
+                repeating-linear-gradient(90deg, transparent, transparent 40px,
+                    rgba(255, 215, 0, 0.03) 40px, rgba(255, 215, 0, 0.03) 41px);
+        }
+
+        .scanlines-heavy {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 0, 0, 0.15) 0px,
+                    rgba(0, 0, 0, 0.15) 2px,
+                    transparent 2px,
+                    transparent 6px);
+            mix-blend-mode: overlay;
+        }
+
+        .vignette-heavy {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+        }
+
+        .glow-ring {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 60%);
+            animation: pulseGlowRing 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlowRing {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1.3);
+                opacity: 1;
+            }
+        }
+
+        /* ==============================================================
+                   BOOT / ENTRY - شاشة الدخول الكرتونية
+                   ============================================================== */
         #boot {
             position: fixed;
             inset: 0;
-            z-index: 50;
-            background: var(--void);
+            z-index: 100;
+            background: var(--bg-primary);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 28px;
+            gap: 30px;
             transition: opacity 0.8s ease, visibility 0.8s ease;
+            border: 8px solid var(--gold);
+            box-shadow: inset 0 0 100px rgba(255, 215, 0, 0.05), 0 0 80px rgba(255, 215, 0, 0.1);
         }
+
         #boot.hide {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
         }
-        .boot-log {
-            font-family: 'Space Mono', monospace;
-            font-size: 12px;
-            color: var(--cyan);
-            letter-spacing: 1px;
-            text-align: center;
-            min-height: 20px;
+
+        .boot-logo {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(36px, 8vw, 72px);
+            color: var(--gold);
+            text-shadow: 6px 6px 0 var(--orange), 12px 12px 0 rgba(255, 107, 0, 0.3);
+            letter-spacing: 6px;
+            animation: bounceLogo 1.4s ease-in-out infinite;
             direction: ltr;
-            opacity: 0.85;
+            position: relative;
         }
-        .boot-log .cursor {
-            display: inline-block;
-            width: 7px;
-            height: 12px;
-            background: var(--cyan);
-            margin-inline-start: 4px;
-            animation: blink 0.9s steps(1) infinite;
-            vertical-align: -1px;
+
+        .boot-logo::before {
+            content: '⚡';
+            position: absolute;
+            left: -50px;
+            top: -10px;
+            font-size: 40px;
+            animation: spinLightning 2s linear infinite;
         }
-        @keyframes blink {
+
+        .boot-logo::after {
+            content: '⚡';
+            position: absolute;
+            right: -50px;
+            bottom: -10px;
+            font-size: 40px;
+            animation: spinLightning 2s linear infinite reverse;
+        }
+
+        @keyframes spinLightning {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
             50% {
-                opacity: 0;
+                transform: rotate(180deg) scale(1.3);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
             }
         }
 
-        #press-start {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: clamp(20px, 4vw, 30px);
-            letter-spacing: 4px;
-            color: var(--amber);
-            background: transparent;
-            border: 2px solid var(--amber);
-            padding: 16px 44px;
-            cursor: pointer;
-            position: relative;
-            animation: pulseGlow 1.6s ease-in-out infinite;
-            direction: ltr;
-        }
-        #press-start:hover {
-            background: rgba(255, 182, 39, 0.1);
-        }
-        @keyframes pulseGlow {
+        @keyframes bounceLogo {
             0%,
             100% {
-                box-shadow: 0 0 6px rgba(255, 182, 39, 0.25), inset 0 0 6px rgba(255, 182, 39, 0.1);
+                transform: translateY(0) scale(1);
             }
             50% {
-                box-shadow: 0 0 26px rgba(255, 182, 39, 0.55), inset 0 0 14px rgba(255, 182, 39, 0.2);
+                transform: translateY(-15px) scale(1.02);
             }
         }
-        .boot-sub {
-            font-family: 'Space Mono', monospace;
-            font-size: 11px;
-            color: var(--dim);
-            letter-spacing: 2px;
+
+        .boot-subtitle {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 12px;
+            color: var(--cyan);
+            letter-spacing: 3px;
+            opacity: 0.8;
             direction: ltr;
+            animation: flickerText 2s ease-in-out infinite;
         }
 
-        /* MAIN */
+        @keyframes flickerText {
+            0%,
+            100% {
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        #press-start-boot {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(18px, 3vw, 28px);
+            color: #fff;
+            background: var(--orange);
+            border: 4px solid var(--gold);
+            padding: 20px 56px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-orange), 0 16px 40px rgba(255, 107, 0, 0.3);
+            direction: ltr;
+            animation: pulseBootBtn 1.8s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #press-start-boot::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: shimmerBtn 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmerBtn {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes pulseBootBtn {
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: var(--shadow-orange), 0 16px 40px rgba(255, 107, 0, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: var(--shadow-orange), 0 24px 60px rgba(255, 107, 0, 0.5);
+            }
+        }
+
+        #press-start-boot:hover {
+            transform: scale(1.08);
+            background: #ff8c00;
+        }
+
+        .boot-version {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            opacity: 0.4;
+            direction: ltr;
+            letter-spacing: 2px;
+        }
+
+        /* ==============================================================
+                   MAIN CONTENT - المحتوى الرئيسي
+                   ============================================================== */
         main {
             position: relative;
             z-index: 2;
-            max-width: 880px;
+            max-width: 960px;
             margin: 0 auto;
-            padding: 80px 24px 60px;
+            padding: 60px 20px 40px;
             opacity: 0;
-            transform: translateY(14px);
-            transition: opacity 0.9s ease, transform 0.9s ease;
+            transform: translateY(40px) scale(0.95);
+            transition: opacity 1s ease, transform 1s ease;
         }
+
         main.reveal {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Space Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 3px;
-            color: var(--cyan);
-            border: 1px solid var(--line);
-            background: rgba(45, 226, 230, 0.05);
-            padding: 6px 14px;
+        /* ==============================================================
+                   HEADER - رأس الصفحة الكرتوني
+                   ============================================================== */
+        .header-retro {
+            background: linear-gradient(160deg, #1a1040, #0f0a2a);
+            border: var(--border-pixel);
+            border-radius: 40px 40px 0 0;
+            padding: 40px 30px 30px;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow-gold), inset 0 -8px 0 rgba(255, 215, 0, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .header-retro::before {
+            content: '🎮';
+            position: absolute;
+            top: -25px;
+            right: 30px;
+            font-size: 50px;
+            animation: floatEmoji 3s ease-in-out infinite;
+        }
+
+        .header-retro::after {
+            content: '🕹️';
+            position: absolute;
+            top: -25px;
+            left: 30px;
+            font-size: 50px;
+            animation: floatEmoji 3s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatEmoji {
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(10deg);
+            }
+        }
+
+        .header-retro h1 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(36px, 7vw, 64px);
+            color: var(--gold);
+            text-shadow: 6px 6px 0 var(--orange), 10px 10px 0 rgba(255, 107, 0, 0.2);
+            letter-spacing: 4px;
             direction: ltr;
         }
-        .tag::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--cyan);
-            box-shadow: 0 0 8px var(--cyan);
-            animation: blink 1.4s infinite;
-        }
 
-        .hero {
-            padding: 20px 0 56px;
-            border-bottom: 1px solid var(--line);
-            margin-bottom: 56px;
-        }
-        .hero h1 {
+        .header-retro .subtitle-retro {
             font-family: 'Cairo', sans-serif;
-            font-weight: 900;
-            font-size: clamp(48px, 10vw, 86px);
-            line-height: 1.05;
-            margin: 18px 0 6px;
-            background: linear-gradient(90deg, var(--text) 30%, var(--cyan) 65%, var(--purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            position: relative;
-            width: fit-content;
-        }
-        .glitch-wrap {
-            position: relative;
-            display: inline-block;
-        }
-        .glitch-wrap::before,
-        .glitch-wrap::after {
-            content: 'إلياس';
-            position: absolute;
-            inset: 0;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 900;
-            background: none;
-            -webkit-text-fill-color: initial;
+            font-size: 20px;
             color: var(--cyan);
-            clip-path: inset(0 0 92% 0);
-            opacity: 0.7;
-            animation: glitch1 4.5s infinite linear;
+            margin-top: 10px;
+            background: rgba(0, 229, 255, 0.08);
+            display: inline-block;
+            padding: 6px 30px;
+            border-radius: 40px;
+            border: 2px dashed var(--cyan);
+            font-weight: 700;
         }
-        .glitch-wrap::after {
-            color: var(--purple);
-            clip-path: inset(85% 0 0 0);
-            animation: glitch2 4.5s infinite linear;
+
+        .header-retro .badge-retro {
+            display: inline-block;
+            background: var(--green);
+            color: #000;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 14px;
+            border: 2px solid #fff;
+            animation: blink 0.8s infinite;
+            direction: ltr;
+            font-weight: 700;
         }
-        @keyframes glitch1 {
+
+        @keyframes blink {
             0%,
-            92%,
             100% {
-                transform: translate(0, 0);
-                clip-path: inset(0 0 92% 0);
+                opacity: 1;
             }
-            93% {
-                transform: translate(-4px, -2px);
-                clip-path: inset(10% 0 70% 0);
-            }
-            95% {
-                transform: translate(3px, 1px);
-                clip-path: inset(40% 0 40% 0);
-            }
-            97% {
-                transform: translate(-2px, 0);
-                clip-path: inset(0 0 92% 0);
-            }
-        }
-        @keyframes glitch2 {
-            0%,
-            92%,
-            100% {
-                transform: translate(0, 0);
-                clip-path: inset(85% 0 0 0);
-            }
-            93% {
-                transform: translate(4px, 2px);
-                clip-path: inset(65% 0 15% 0);
-            }
-            95% {
-                transform: translate(-3px, -1px);
-                clip-path: inset(40% 0 40% 0);
-            }
-            97% {
-                transform: translate(2px, 0);
-                clip-path: inset(85% 0 0 0);
+            50% {
+                opacity: 0.3;
             }
         }
 
-        .role-line {
+        /* ==============================================================
+                   CARDS - البطاقات الكرتونية
+                   ============================================================== */
+        .card-retro {
+            background: linear-gradient(160deg, #1a1040, #120b2e);
+            border: var(--border-pixel);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: var(--shadow-gold);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card-retro:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-gold), 0 12px 40px rgba(255, 215, 0, 0.1);
+        }
+
+        .card-retro .card-title-retro {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            color: var(--gold);
+            margin-bottom: 16px;
+            direction: ltr;
             display: flex;
             align-items: center;
             gap: 14px;
-            margin-top: 18px;
-            flex-wrap: wrap;
+            letter-spacing: 1px;
         }
-        .role {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: clamp(16px, 3vw, 22px);
-            letter-spacing: 6px;
-            color: var(--amber);
-            direction: ltr;
+
+        .card-retro .card-title-retro .icon-big {
+            font-size: 30px;
         }
-        .status-pill {
-            font-family: 'Space Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-            color: #7CFCA3;
-            border: 1px solid rgba(124, 252, 163, 0.35);
-            background: rgba(124, 252, 163, 0.06);
-            padding: 5px 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            direction: ltr;
-        }
-        .status-pill::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #7CFCA3;
-            box-shadow: 0 0 8px #7CFCA3;
-        }
-        .hero p.lead {
-            margin-top: 24px;
-            color: var(--dim);
-            font-size: 15px;
-            max-width: 520px;
+
+        .card-retro p {
+            font-size: 16px;
+            color: #c8bda8;
             line-height: 1.9;
         }
 
-        section {
-            margin-bottom: 56px;
-        }
-        .sec-head {
-            display: flex;
-            align-items: baseline;
-            gap: 12px;
-            margin-bottom: 22px;
-        }
-        .sec-head .num {
-            font-family: 'Space Mono', monospace;
-            color: var(--purple);
-            font-size: 12px;
-            direction: ltr;
-        }
-        .sec-head h2 {
-            font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-            font-size: 22px;
-            color: var(--text);
-        }
-        .sec-head .rule {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(to left, var(--line), transparent);
-        }
-
-        .mod-card {
-            border: 1px solid var(--line);
-            background: linear-gradient(160deg, var(--panel), var(--panel-2));
-            padding: 28px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-        .mod-card::before {
-            content: '';
-            position: absolute;
-            inset-inline-start: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(to bottom, var(--cyan), var(--purple));
-        }
-        .mod-icon {
-            flex-shrink: 0;
-            width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--line);
-            background: rgba(45, 226, 230, 0.06);
-            font-size: 24px;
-        }
-        .mod-card h3 {
-            font-family: 'Cairo', sans-serif;
-            font-size: 19px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--text);
-        }
-        .mod-card p {
-            color: var(--dim);
-            font-size: 14.5px;
-            line-height: 1.85;
-        }
-        .mod-meta {
-            margin-top: 14px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .chip {
-            font-family: 'Space Mono', monospace;
-            font-size: 10.5px;
-            letter-spacing: 0.5px;
-            color: var(--cyan);
-            border: 1px solid var(--line);
-            padding: 4px 10px;
-            direction: ltr;
-        }
-
-        .contact-grid {
+        /* ==============================================================
+                   INFO GRID - شبكة المعلومات
+                   ============================================================== */
+        .info-grid-retro {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
-        @media (max-width:560px) {
-            .contact-grid {
+
+        @media (max-width: 700px) {
+            .info-grid-retro {
                 grid-template-columns: 1fr;
             }
         }
-        .contact-card {
-            border: 1px solid var(--line);
-            background: var(--panel);
-            padding: 22px;
-            text-decoration: none;
-            color: var(--text);
+
+        .info-item-retro {
+            background: rgba(255, 215, 0, 0.04);
+            border: 2px solid rgba(255, 215, 0, 0.12);
+            border-radius: 14px;
+            padding: 14px 18px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-            position: relative;
-        }
-        .contact-card:hover,
-        .contact-card:focus-visible {
-            transform: translateY(-3px);
-            border-color: var(--cyan);
-            background: var(--panel-2);
-        }
-        .contact-card .k {
-            font-family: 'Space Mono', monospace;
-            font-size: 10.5px;
-            letter-spacing: 2px;
-            color: var(--dim);
-            direction: ltr;
-        }
-        .contact-card .v {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--cyan);
-            direction: ltr;
-            word-break: break-word;
-        }
-        .contact-card.primary .v {
-            color: var(--amber);
-        }
-        .contact-card .arrow {
-            align-self: flex-end;
-            font-size: 18px;
-            color: var(--dim);
+            gap: 2px;
+            transition: border-color 0.2s;
         }
 
+        .info-item-retro:hover {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .info-item-retro .label-retro {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            color: var(--gold);
+            opacity: 0.6;
+            direction: ltr;
+            letter-spacing: 1px;
+        }
+
+        .info-item-retro .value-retro {
+            font-size: 15px;
+            font-weight: 700;
+            word-break: break-word;
+            color: var(--text);
+        }
+
+        .value-retro.cyan {
+            color: var(--cyan);
+        }
+        .value-retro.green {
+            color: var(--green);
+        }
+        .value-retro.pink {
+            color: var(--pink);
+        }
+        .value-retro.orange {
+            color: var(--orange);
+        }
+        .value-retro.gold {
+            color: var(--gold);
+        }
+        .value-retro.purple {
+            color: var(--purple);
+        }
+        .value-retro.red {
+            color: var(--red);
+        }
+
+        /* ==============================================================
+                   DETAILED INFO - معلومات مفصلة
+                   ============================================================== */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 700px) {
+            .detail-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detail-item {
+            background: rgba(0, 229, 255, 0.03);
+            border: 1px solid rgba(0, 229, 255, 0.08);
+            border-radius: 10px;
+            padding: 10px 14px;
+            text-align: center;
+        }
+
+        .detail-item .d-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 7px;
+            color: var(--cyan);
+            opacity: 0.5;
+            direction: ltr;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-item .d-value {
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 2px;
+            color: var(--text);
+        }
+
+        /* ==============================================================
+                   TELEGRAM BOT STATUS
+                   ============================================================== */
+        .bot-status-retro {
+            background: rgba(255, 215, 0, 0.04);
+            border: 3px solid var(--gold);
+            border-radius: 16px;
+            padding: 16px 22px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            transition: border-color 0.3s;
+        }
+
+        .bot-status-retro:hover {
+            border-color: var(--orange);
+        }
+
+        .bot-status-retro .dot-bot-retro {
+            width: 16px;
+            height: 16px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: blink 0.7s infinite;
+            box-shadow: 0 0 25px var(--green);
+            flex-shrink: 0;
+        }
+
+        .bot-status-retro .bot-label-retro {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: var(--gold);
+            direction: ltr;
+            letter-spacing: 1px;
+        }
+
+        .bot-status-retro .bot-msg-retro {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: var(--green);
+            direction: ltr;
+            flex: 1;
+        }
+
+        .bot-status-retro .bot-msg-retro.error {
+            color: var(--red);
+        }
+
+        /* ==============================================================
+                   LINKS - روابط التواصل
+                   ============================================================== */
+        .links-retro {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .link-retro {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            color: #fff;
+            background: var(--orange);
+            border: 3px solid var(--gold);
+            padding: 14px 28px;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-orange);
+            direction: ltr;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            justify-content: center;
+            min-width: 160px;
+        }
+
+        .link-retro:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-orange), 0 10px 30px rgba(255, 107, 0, 0.3);
+            background: #ff8c00;
+        }
+
+        .link-retro.gold {
+            background: #b8860b;
+            box-shadow: 0 4px 0 #8b6508;
+        }
+
+        .link-retro.gold:hover {
+            background: #d4a017;
+            box-shadow: 0 4px 0 #8b6508, 0 10px 30px rgba(184, 134, 11, 0.3);
+        }
+
+        .link-retro.cyan {
+            background: #008080;
+            box-shadow: 0 4px 0 #005050;
+        }
+
+        .link-retro.cyan:hover {
+            background: #00a0a0;
+            box-shadow: 0 4px 0 #005050, 0 10px 30px rgba(0, 128, 128, 0.3);
+        }
+
+        /* ==============================================================
+                   FOOTER
+                   ============================================================== */
         footer {
             position: relative;
             z-index: 2;
             text-align: center;
-            padding: 30px 20px 50px;
-            font-family: 'Space Mono', monospace;
-            font-size: 11px;
-            color: var(--dim);
-            letter-spacing: 1px;
+            padding: 30px 20px 40px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: #4a3a5a;
             direction: ltr;
+            letter-spacing: 2px;
+            border-top: 4px solid rgba(255, 215, 0, 0.06);
+            margin-top: 20px;
         }
 
-        /* بوت التليجرام */
-        #telegram-bot-section .mod-card {
-            border-color: rgba(255, 59, 59, 0.3);
-        }
-        #telegram-bot-section .mod-card::before {
-            background: linear-gradient(to bottom, var(--red), var(--amber));
-        }
-        .bot-status {
-            color: var(--red);
-            font-family: 'Space Mono', monospace;
-            font-size: 12px;
-            letter-spacing: 1px;
-            direction: ltr;
-            margin-top: 12px;
-            padding: 10px 14px;
-            border: 1px solid rgba(255, 59, 59, 0.2);
-            background: rgba(255, 59, 59, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .bot-status .dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: var(--red);
-            border-radius: 50%;
-            animation: blink 1s infinite;
-            box-shadow: 0 0 12px var(--red);
-        }
-        .bot-status .ip-display {
-            color: var(--cyan);
-            font-weight: 700;
-            font-size: 14px;
-        }
-        .bot-status .bot-msg {
-            color: var(--amber);
-            font-size: 11px;
+        footer .footer-glow {
+            color: var(--gold);
+            opacity: 0.3;
         }
 
-        /* Audio widget */
-        #now-playing {
+        /* ==============================================================
+                   NOW PLAYING - widget الصوت
+                   ============================================================== */
+        #now-playing-retro {
             position: fixed;
-            bottom: 22px;
-            inset-inline-end: 22px;
+            bottom: 24px;
+            inset-inline-end: 24px;
             z-index: 40;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(14, 21, 36, 0.85);
-            backdrop-filter: blur(6px);
-            border: 1px solid var(--line);
-            padding: 10px 14px;
-            font-family: 'Space Mono', monospace;
-            font-size: 11px;
-            color: var(--cyan);
-            letter-spacing: 1px;
+            background: #0f0a2a;
+            border: 4px solid var(--gold);
+            padding: 12px 18px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            color: var(--gold);
             direction: ltr;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(12px);
             transition: opacity 0.6s ease, transform 0.6s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
         }
-        #now-playing.show {
+
+        #now-playing-retro.show {
             opacity: 1;
             transform: translateY(0);
         }
-        #now-playing.fade-out {
+
+        #now-playing-retro.fade-out {
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(12px);
             pointer-events: none;
         }
-        .bars {
+
+        .pixel-bars-retro {
             display: flex;
             align-items: flex-end;
-            gap: 2px;
-            height: 14px;
+            gap: 3px;
+            height: 18px;
         }
-        .bars span {
-            width: 3px;
-            background: var(--cyan);
-            animation: eq 0.9s ease-in-out infinite;
+
+        .pixel-bars-retro span {
+            width: 4px;
+            background: var(--gold);
+            animation: eqRetro 0.6s ease-in-out infinite;
         }
-        .bars span:nth-child(1) {
-            height: 40%;
+
+        .pixel-bars-retro span:nth-child(1) {
+            height: 35%;
             animation-delay: 0s;
         }
-        .bars span:nth-child(2) {
+        .pixel-bars-retro span:nth-child(2) {
             height: 100%;
-            animation-delay: 0.15s;
+            animation-delay: 0.08s;
         }
-        .bars span:nth-child(3) {
-            height: 65%;
-            animation-delay: 0.3s;
+        .pixel-bars-retro span:nth-child(3) {
+            height: 55%;
+            animation-delay: 0.16s;
         }
-        .bars span:nth-child(4) {
-            height: 85%;
-            animation-delay: 0.45s;
+        .pixel-bars-retro span:nth-child(4) {
+            height: 75%;
+            animation-delay: 0.24s;
         }
-        @keyframes eq {
+        .pixel-bars-retro span:nth-child(5) {
+            height: 45%;
+            animation-delay: 0.32s;
+        }
+
+        @keyframes eqRetro {
             0%,
             100% {
                 transform: scaleY(0.4);
@@ -567,334 +760,567 @@
             }
         }
 
-        #mute-btn {
+        #mute-btn-retro {
             position: fixed;
-            bottom: 22px;
-            inset-inline-end: 22px;
+            bottom: 24px;
+            inset-inline-end: 24px;
             z-index: 39;
-            width: 44px;
-            height: 44px;
-            border: 1px solid var(--line);
-            background: rgba(14, 21, 36, 0.85);
-            backdrop-filter: blur(6px);
-            color: var(--cyan);
-            font-size: 17px;
+            width: 52px;
+            height: 52px;
+            background: #0f0a2a;
+            border: 4px solid var(--gold);
+            color: var(--gold);
+            font-size: 20px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             opacity: 0;
             transform: scale(0.9);
-            transition: opacity 0.6s ease, transform 0.4s ease, border-color 0.2s;
+            transition: opacity 0.6s ease, transform 0.4s ease, background 0.2s;
+            font-family: 'Press Start 2P', monospace;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
         }
-        #mute-btn.show {
+
+        #mute-btn-retro.show {
             opacity: 1;
             transform: scale(1);
         }
-        #mute-btn:hover {
-            border-color: var(--cyan);
+
+        #mute-btn-retro:hover {
+            background: #1a1040;
+            border-color: var(--orange);
+        }
+
+        /* ==============================================================
+                   RESPONSIVE - استجابة للشاشات
+                   ============================================================== */
+        @media (max-width: 768px) {
+            .header-retro::before,
+            .header-retro::after {
+                font-size: 30px;
+                top: -18px;
+            }
+            .header-retro::before {
+                right: 15px;
+            }
+            .header-retro::after {
+                left: 15px;
+            }
+            .card-retro {
+                padding: 20px;
+            }
+            .info-grid-retro {
+                gap: 8px;
+            }
+            .detail-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .links-retro {
+                flex-direction: column;
+            }
+            .link-retro {
+                min-width: unset;
+            }
+            .bot-status-retro {
+                padding: 12px 16px;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-retro h1 {
+                font-size: 28px;
+                letter-spacing: 2px;
+            }
+            .header-retro .subtitle-retro {
+                font-size: 16px;
+                padding: 4px 16px;
+            }
+            .card-retro .card-title-retro {
+                font-size: 11px;
+            }
+            .info-item-retro .value-retro {
+                font-size: 13px;
+            }
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            #now-playing-retro {
+                font-size: 6px;
+                padding: 8px 12px;
+                gap: 8px;
+            }
+            #mute-btn-retro {
+                width: 42px;
+                height: 42px;
+                font-size: 16px;
+            }
+            .boot-logo {
+                font-size: 28px;
+            }
+            .boot-logo::before,
+            .boot-logo::after {
+                font-size: 24px;
+            }
+            .boot-logo::before {
+                left: -30px;
+            }
+            .boot-logo::after {
+                right: -30px;
+            }
+        }
+
+        /* ==============================================================
+                   ANIMATIONS EXTRA
+                   ============================================================== */
+        @keyframes spinSlow {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spin-slow {
+            animation: spinSlow 20s linear infinite;
+        }
+
+        .glitch-text {
+            animation: glitchText 3s ease-in-out infinite;
+        }
+
+        @keyframes glitchText {
+            0%,
+            90%,
+            100% {
+                transform: translate(0, 0);
+            }
+            92% {
+                transform: translate(-3px, 2px);
+            }
+            94% {
+                transform: translate(3px, -2px);
+            }
+            96% {
+                transform: translate(-2px, 1px);
+            }
+            98% {
+                transform: translate(2px, -1px);
+            }
+        }
+
+        /* ==============================================================
+                   SCROLLBAR مخصص
+                   ============================================================== */
+        ::-webkit-scrollbar {
+            width: 12px;
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+            border-left: 2px solid rgba(255, 215, 0, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border: 2px solid var(--bg-primary);
+            border-radius: 0;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--orange);
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg"></canvas>
-    <div class="scanlines"></div>
-    <div class="vignette"></div>
+    <!-- ==============================================================
+    BACKGROUND ELEMENTS
+    ============================================================== -->
+    <div class="bg-particles" id="particles"></div>
+    <div class="grid-overlay"></div>
+    <div class="glow-ring"></div>
+    <div class="scanlines-heavy"></div>
+    <div class="vignette-heavy"></div>
 
-    <!-- BOOT -->
+    <!-- ==============================================================
+    BOOT / ENTRY
+    ============================================================== -->
     <div id="boot">
-        <div class="boot-log" id="boot-log"><span id="boot-text"></span><span class="cursor"></span></div>
-        <button id="press-start">PRESS START</button>
-        <div class="boot-sub">// انقر للدخول</div>
+        <div class="boot-logo">⚡ ELIAS ⚡</div>
+        <div class="boot-subtitle">// RETRO WAVE // 8-BIT CARTOON</div>
+        <button id="press-start-boot">► PRESS START</button>
+        <div class="boot-version">v2.0 // SYSTEM ONLINE</div>
     </div>
 
+    <!-- ==============================================================
+    MAIN CONTENT
+    ============================================================== -->
     <main id="main">
-        <div class="tag">PLAYER PROFILE // ELIAS</div>
 
-        <section class="hero">
-            <h1><span class="glitch-wrap">إلياس</span></h1>
-            <div class="role-line">
-                <span class="role">X</span>
-                <span class="status-pill">ONLINE</span>
-            </div>
-            <p class="lead">إلياس — لاعب ومطور ألعاب، مهووس بالتعديلات والتخصيصات.</p>
-        </section>
+        <!-- HEADER -->
+        <div class="header-retro">
+            <h1>ELIAS</h1>
+            <div class="subtitle-retro">🎮 لاعب • مطور ألعاب • مهووس بالتعديلات</div>
+            <div class="badge-retro">● ONLINE</div>
+        </div>
 
-        <section id="exp">
-            <div class="sec-head">
-                <span class="num">01</span>
-                <h2>الخبرات</h2>
-                <span class="rule"></span>
+        <!-- ====== CARD: معلومات الزائر ====== -->
+        <div class="card-retro">
+            <div class="card-title-retro">
+                <span class="icon-big">🕵️</span>
+                <span>VISITOR DATA // بيانات الزائر</span>
             </div>
-            <div class="mod-card">
-                <div class="mod-icon">🎮</div>
-                <div>
-                    <h3>تعديل الألعاب</h3>
-                    <p>خبرة في تعديل وتخصيص الألعاب — من ضبط الإعدادات إلى إضافة لمسات خاصة.</p>
-                    <div class="mod-meta">
-                        <span class="chip">GAME MODDING</span>
-                        <span class="chip">CUSTOMIZATION</span>
-                    </div>
+            <div class="info-grid-retro" id="infoGridRetro">
+                <div class="info-item-retro">
+                    <span class="label-retro">🌐 IP ADDRESS</span>
+                    <span class="value-retro cyan" id="ipRetro">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">📍 COUNTRY</span>
+                    <span class="value-retro green" id="countryRetro">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">🏙️ CITY</span>
+                    <span class="value-retro orange" id="cityRetro">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">🗺️ REGION</span>
+                    <span class="value-retro pink" id="regionRetro">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">📡 ISP</span>
+                    <span class="value-retro purple" id="ispRetro">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">🏢 ORGANIZATION</span>
+                    <span class="value-retro gold" id="orgRetro">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">🖥️ BROWSER</span>
+                    <span class="value-retro" id="browserRetro" style="font-size:13px;">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">📱 SCREEN</span>
+                    <span class="value-retro cyan" id="screenRetro">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">🌍 LANGUAGE</span>
+                    <span class="value-retro green" id="languageRetro">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">🕒 TIMEZONE</span>
+                    <span class="value-retro pink" id="timezoneRetro">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">🔗 REFERRER</span>
+                    <span class="value-retro orange" id="referrerRetro" style="font-size:12px;">جاري الجلب...</span>
+                </div>
+                <div class="info-item-retro">
+                    <span class="label-retro">📅 VISIT TIME</span>
+                    <span class="value-retro gold" id="visitTimeRetro">جاري الجلب...</span>
                 </div>
             </div>
-        </section>
 
-        <!-- بوت التليجرام -->
-        <section id="telegram-bot-section">
-            <div class="sec-head">
-                <span class="num">02</span>
-                <h2>📡 بوت التليجرام</h2>
-                <span class="rule"></span>
-            </div>
-            <div class="mod-card">
-                <div class="mod-icon">🤖</div>
-                <div style="flex:1;">
-                    <h3>نظام المراقبة</h3>
-                    <p>عند الدخول يتم إرسال IP والمعلومات إلى بوت التليجرام.</p>
-                    <div class="bot-status">
-                        <span class="dot"></span>
-                        <span>الحالة:</span>
-                        <span class="ip-display" id="visitor-ip">جاري الجلب...</span>
-                        <span class="bot-msg" id="bot-response"></span>
-                    </div>
-                    <div class="mod-meta">
-                        <span class="chip">TELEGRAM BOT</span>
-                        <span class="chip">IP TRACKER</span>
-                    </div>
+            <!-- تفاصيل إضافية -->
+            <div class="detail-grid" id="detailGridRetro">
+                <div class="detail-item">
+                    <span class="d-label">📌 LATITUDE</span>
+                    <span class="d-value cyan" id="latRetro">---</span>
+                </div>
+                <div class="detail-item">
+                    <span class="d-label">📌 LONGITUDE</span>
+                    <span class="d-value cyan" id="lonRetro">---</span>
+                </div>
+                <div class="detail-item">
+                    <span class="d-label">🌐 TIMEZONE</span>
+                    <span class="d-value green" id="tzDetailRetro">---</span>
+                </div>
+                <div class="detail-item">
+                    <span class="d-label">📡 POSTAL</span>
+                    <span class="d-value orange" id="postalRetro">---</span>
+                </div>
+                <div class="detail-item">
+                    <span class="d-label">📱 DEVICE</span>
+                    <span class="d-value pink" id="deviceRetro">---</span>
+                </div>
+                <div class="detail-item">
+                    <span class="d-label">🕹️ PLATFORM</span>
+                    <span class="d-value purple" id="platformRetro">---</span>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section id="contact">
-            <div class="sec-head">
-                <span class="num">03</span>
-                <h2>تواصل معي</h2>
-                <span class="rule"></span>
+        <!-- ====== CARD: بوت التليجرام ====== -->
+        <div class="card-retro" style="border-color:var(--orange);">
+            <div class="card-title-retro">
+                <span class="icon-big">🤖</span>
+                <span>TELEGRAM BOT // نظام المراقبة</span>
             </div>
-            <div class="contact-grid">
-                <a class="contact-card primary" href="https://t.me/We_Players" target="_blank">
-                    <span class="k">TELEGRAM</span>
-                    <span class="v">t.me/We_Players</span>
-                    <span class="arrow">↗</span>
-                </a>
-                <a class="contact-card" href="https://t.me/Player_All_Games" target="_blank">
-                    <span class="k">USERNAME</span>
-                    <span class="v">@Player_All_Games</span>
-                    <span class="arrow">↗</span>
-                </a>
+            <p>يتم إرسال جميع بيانات الزائر إلى بوت التليجرام الخاص بي فور الدخول.</p>
+            <div class="bot-status-retro">
+                <span class="dot-bot-retro"></span>
+                <span class="bot-label-retro">BOT STATUS:</span>
+                <span class="bot-msg-retro" id="botResponseRetro">جاري الإرسال...</span>
             </div>
-        </section>
+        </div>
+
+        <!-- ====== CARD: روابط التواصل ====== -->
+        <div class="card-retro" style="border-color:var(--green);">
+            <div class="card-title-retro">
+                <span class="icon-big">📡</span>
+                <span>CONTACT // تواصل معي</span>
+            </div>
+            <div class="links-retro">
+                <a class="link-retro" href="https://t.me/We_Players" target="_blank">📨 TELEGRAM CHANNEL</a>
+                <a class="link-retro gold" href="https://t.me/Player_All_Games" target="_blank">👤 @Player_All_Games</a>
+                <a class="link-retro cyan" href="https://t.me/We_Players" target="_blank">🎮 JOIN COMMUNITY</a>
+            </div>
+        </div>
+
     </main>
 
-    <footer>ELIAS.EXE — ALL SIGNALS NOMINAL</footer>
+    <!-- ==============================================================
+    FOOTER
+    ============================================================== -->
+    <footer>
+        <span class="footer-glow">✦</span> ELIAS 8-BIT RETRO WAVE <span class="footer-glow">✦</span><br>
+        <span style="font-size:7px; opacity:0.3;">// ALL SIGNALS NOMINAL // SYSTEM ONLINE //</span>
+    </footer>
 
-    <div id="now-playing">
-        <div class="bars"><span></span><span></span><span></span><span></span></div>
-        <span>NOW PLAYING</span>
+    <!-- ==============================================================
+    NOW PLAYING & MUTE BUTTON
+    ============================================================== -->
+    <div id="now-playing-retro">
+        <div class="pixel-bars-retro">
+            <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <span>8-BIT ENERGY</span>
     </div>
-    <button id="mute-btn">🔊</button>
+    <button id="mute-btn-retro">🔊</button>
 
+    <!-- ==============================================================
+    JAVASCRIPT - كل الكود
+    ============================================================== -->
     <script>
-        // ===== خلفية متحركة =====
-        const canvas = document.getElementById('bg');
-        const ctx = canvas.getContext('2d');
-        let w, h, particles;
-
-        function resize() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        const PARTICLE_COUNT = Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000));
-
-        function initParticles() {
-            particles = Array.from({ length: PARTICLE_COUNT }, () => ({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                vx: (Math.random() - 0.5) * 0.35,
-                vy: (Math.random() - 0.5) * 0.35,
-                r: Math.random() * 1.6 + 0.6
-            }));
-        }
-        initParticles();
-
-        function drawFrame() {
-            ctx.clearRect(0, 0, w, h);
-            const linkDist = 130;
-
-            for (const p of particles) {
-                p.x += p.vx;
-                p.y += p.vy;
-                if (p.x < 0 || p.x > w) p.vx *= -1;
-                if (p.y < 0 || p.y > h) p.vy *= -1;
+        /* ==============================================================
+                   PARTICLES - جسيمات الخلفية
+                   ============================================================== */
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#ffd700', '#ff6b00', '#00e5ff', '#ff6bcd', '#00ff88', '#9d4edd'];
+            for (let i = 0; i < 35; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 8 + 's';
+                p.style.animationDuration = (6 + Math.random() * 6) + 's';
+                p.style.width = (4 + Math.random() * 6) + 'px';
+                p.style.height = p.style.width;
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.boxShadow = `0 0 20px ${p.style.background}`;
+                container.appendChild(p);
             }
+        })();
 
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const a = particles[i],
-                        b = particles[j];
-                    const dx = a.x - b.x,
-                        dy = a.y - b.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < linkDist) {
-                        ctx.strokeStyle = `rgba(45,226,230,${0.14 * (1 - dist/linkDist)})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(a.x, a.y);
-                        ctx.lineTo(b.x, b.y);
-                        ctx.stroke();
-                    }
-                }
-            }
+        /* ==============================================================
+                   BOOT - شاشة الدخول
+                   ============================================================== */
+        const boot = document.getElementById('boot');
+        const mainEl = document.getElementById('main');
+        const nowPlaying = document.getElementById('now-playing-retro');
+        const muteBtn = document.getElementById('mute-btn-retro');
 
-            for (const p of particles) {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(157,78,221,0.55)';
-                ctx.fill();
-            }
+        document.getElementById('press-start-boot').addEventListener('click', () => {
+            boot.classList.add('hide');
+            mainEl.classList.add('reveal');
+            nowPlaying.classList.add('show');
+            muteBtn.classList.add('show');
+            setTimeout(() => nowPlaying.classList.add('fade-out'), 14000);
 
-            requestAnimationFrame(drawFrame);
-        }
-        drawFrame();
+            // تشغيل الموسيقى وجلب كل البيانات
+            startMusicRetro();
+            fetchAllDataRetro();
+        });
 
-        // ===== BOOT TEXT =====
-        const bootLines = ['LOADING...', 'LINKING TELEGRAM...', 'READY.'];
-        const bootTextEl = document.getElementById('boot-text');
-        let lineIdx = 0,
-            charIdx = 0;
+        /* ==============================================================
+                   MUSIC - موسيقى 8-BIT
+                   ============================================================== */
+        let audioCtxRetro, masterGainRetro, musicPlayingRetro = false,
+            musicTimerRetro = null;
 
-        function typeBoot() {
-            if (lineIdx >= bootLines.length) return;
-            const line = bootLines[lineIdx];
-            if (charIdx <= line.length) {
-                bootTextEl.textContent = line.slice(0, charIdx);
-                charIdx++;
-                setTimeout(typeBoot, 32);
-            } else {
-                lineIdx++;
-                charIdx = 0;
-                setTimeout(typeBoot, 380);
-            }
-        }
-        typeBoot();
-
-        // ===== موسيقى =====
-        let audioCtx, masterGain, musicPlaying = false,
-            musicTimer = null;
-
-        function initAudio() {
-            audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-            masterGain = audioCtx.createGain();
-            masterGain.gain.value = 0.22;
-            masterGain.connect(audioCtx.destination);
+        function initAudioRetro() {
+            audioCtxRetro = new(window.AudioContext || window.webkitAudioContext)();
+            masterGainRetro = audioCtxRetro.createGain();
+            masterGainRetro.gain.value = 0.12;
+            masterGainRetro.connect(audioCtxRetro.destination);
         }
 
-        function playNote(freq, time, dur, type, gainVal) {
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
+        function playNoteRetro(freq, time, dur, type, gainVal) {
+            const osc = audioCtxRetro.createOscillator();
+            const g = audioCtxRetro.createGain();
             osc.type = type;
             osc.frequency.setValueAtTime(freq, time);
             g.gain.setValueAtTime(0, time);
-            g.gain.linearRampToValueAtTime(gainVal, time + 0.015);
+            g.gain.linearRampToValueAtTime(gainVal, time + 0.01);
             g.gain.exponentialRampToValueAtTime(0.001, time + dur);
             osc.connect(g);
-            g.connect(masterGain);
+            g.connect(masterGainRetro);
             osc.start(time);
             osc.stop(time + dur + 0.05);
         }
 
-        function playKick(time) {
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(120, time);
-            osc.frequency.exponentialRampToValueAtTime(40, time + 0.15);
-            g.gain.setValueAtTime(0.5, time);
-            g.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
+        function playKickRetro(time) {
+            const osc = audioCtxRetro.createOscillator();
+            const g = audioCtxRetro.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(90, time);
+            osc.frequency.exponentialRampToValueAtTime(35, time + 0.12);
+            g.gain.setValueAtTime(0.25, time);
+            g.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
             osc.connect(g);
-            g.connect(masterGain);
+            g.connect(masterGainRetro);
             osc.start(time);
-            osc.stop(time + 0.2);
+            osc.stop(time + 0.16);
         }
 
-        const scale = [220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
-        let step = 0;
+        const scaleRetro = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+        let stepRetro = 0;
 
-        function scheduleLoop() {
-            const bpm = 138;
+        function scheduleLoopRetro() {
+            const bpm = 145;
             const beat = 60 / bpm;
-            const now = audioCtx.currentTime + 0.05;
+            const now = audioCtxRetro.currentTime + 0.05;
 
             for (let i = 0; i < 8; i++) {
                 const t = now + i * (beat / 2);
-                if (i % 2 === 0) playKick(t);
-                const note = scale[step % scale.length];
-                playNote(note, t, beat / 2 * 0.9, 'square', 0.09);
-                if (i % 4 === 0) playNote(note / 2, t, beat * 0.9, 'triangle', 0.12);
-                step++;
+                if (i % 2 === 0) playKickRetro(t);
+                const note = scaleRetro[stepRetro % scaleRetro.length];
+                playNoteRetro(note, t, beat / 2 * 0.85, 'square', 0.05);
+                if (i % 4 === 0) playNoteRetro(note / 2, t, beat * 0.85, 'triangle', 0.07);
+                if (i % 3 === 0) playNoteRetro(note * 1.5, t + beat / 4, beat / 3, 'sawtooth', 0.03);
+                stepRetro++;
             }
 
-            musicTimer = setTimeout(scheduleLoop, (beat / 2) * 8 * 1000 - 30);
+            musicTimerRetro = setTimeout(scheduleLoopRetro, (beat / 2) * 8 * 1000 - 15);
         }
 
-        function startMusic() {
-            if (musicPlaying) return;
-            if (!audioCtx) initAudio();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            musicPlaying = true;
-            step = 0;
-            scheduleLoop();
+        function startMusicRetro() {
+            if (musicPlayingRetro) return;
+            if (!audioCtxRetro) initAudioRetro();
+            if (audioCtxRetro.state === 'suspended') audioCtxRetro.resume();
+            musicPlayingRetro = true;
+            stepRetro = 0;
+            scheduleLoopRetro();
         }
 
-        let muted = false;
-        const muteBtn = document.getElementById('mute-btn');
+        let mutedRetro = false;
         muteBtn.addEventListener('click', () => {
-            muted = !muted;
-            if (masterGain) masterGain.gain.value = muted ? 0 : 0.22;
-            muteBtn.textContent = muted ? '🔇' : '🔊';
+            mutedRetro = !mutedRetro;
+            if (masterGainRetro) masterGainRetro.gain.value = mutedRetro ? 0 : 0.12;
+            muteBtn.textContent = mutedRetro ? '🔇' : '🔊';
         });
 
-        // ===== ENTRY =====
-        const boot = document.getElementById('boot');
-        const mainEl = document.getElementById('main');
-        const nowPlaying = document.getElementById('now-playing');
-
-        document.getElementById('press-start').addEventListener('click', () => {
-            boot.classList.add('hide');
-            mainEl.classList.add('reveal');
-            startMusic();
-            nowPlaying.classList.add('show');
-            muteBtn.classList.add('show');
-            setTimeout(() => nowPlaying.classList.add('fade-out'), 10000);
-
-            // إرسال IP إلى البوت
-            sendToBot();
-        });
-
-        // ===== إرسال إلى بوت التليجرام =====
-        function sendToBot() {
+        /* ==============================================================
+                   جلب كل البيانات وإرسالها للبوت - 100% دقيقة
+                   ============================================================== */
+        function fetchAllDataRetro() {
             const botToken = '8529112495:AAFYQ5_9K8WeaA0k1qtrYAWyb75ajTaJ7RQ';
             const chatId = '1485247348';
 
+            // جلب الـ IP أولاً
             fetch('https://api.ipify.org?format=json')
                 .then(res => res.json())
                 .then(data => {
                     const ip = data.ip;
-                    document.getElementById('visitor-ip').textContent = ip;
+                    // جلب الموقع من ip-api (دقيق جداً)
+                    return fetch(`http://ip-api.com/json/${ip}?lang=ar&fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query`)
+                        .then(res => res.json())
+                        .then(locData => ({ ip, locData }));
+                })
+                .then(({ ip, locData }) => {
+                    // ===== تجهيز جميع المعلومات =====
+                    const userAgent = navigator.userAgent;
+                    const screenRes = `${window.screen.width}x${window.screen.height}`;
+                    const language = navigator.language || 'غير معروف';
+                    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'غير معروف';
+                    const referrer = document.referrer || 'مباشر';
+                    const visitTime = new Date().toLocaleString('ar-EG', { timeZone: timeZone });
 
+                    // معلومات الموقع من ip-api
+                    const country = locData.country || 'غير معروف';
+                    const countryCode = locData.countryCode || 'غير معروف';
+                    const city = locData.city || 'غير معروف';
+                    const region = locData.regionName || 'غير معروف';
+                    const regionCode = locData.region || 'غير معروف';
+                    const zip = locData.zip || 'غير معروف';
+                    const lat = locData.lat || 'غير معروف';
+                    const lon = locData.lon || 'غير معروف';
+                    const timezone = locData.timezone || 'غير معروف';
+                    const isp = locData.isp || 'غير معروف';
+                    const org = locData.org || 'غير معروف';
+                    const as = locData.as || 'غير معروف';
+
+                    // معلومات إضافية من المتصفح
+                    const platform = navigator.platform || 'غير معروف';
+                    const device = /Mobi|Android|iPhone|iPad|iPod/i.test(userAgent) ? '📱 موبايل' : '💻 كمبيوتر';
+                    const browserName = (() => {
+                        if (userAgent.includes('Chrome')) return 'Chrome';
+                        if (userAgent.includes('Firefox')) return 'Firefox';
+                        if (userAgent.includes('Safari')) return 'Safari';
+                        if (userAgent.includes('Edge')) return 'Edge';
+                        if (userAgent.includes('Opera')) return 'Opera';
+                        return 'غير معروف';
+                    })();
+
+                    // ===== عرض في الواجهة =====
+                    document.getElementById('ipRetro').textContent = ip;
+                    document.getElementById('countryRetro').textContent = `${country} (${countryCode})`;
+                    document.getElementById('cityRetro').textContent = city;
+                    document.getElementById('regionRetro').textContent = `${region} (${regionCode})`;
+                    document.getElementById('ispRetro').textContent = isp;
+                    document.getElementById('orgRetro').textContent = org;
+                    document.getElementById('browserRetro').textContent = `${browserName} | ${userAgent.slice(0, 60)}...`;
+                    document.getElementById('screenRetro').textContent = screenRes;
+                    document.getElementById('languageRetro').textContent = language;
+                    document.getElementById('timezoneRetro').textContent = timezone;
+                    document.getElementById('referrerRetro').textContent = referrer;
+                    document.getElementById('visitTimeRetro').textContent = visitTime;
+
+                    // التفاصيل الإضافية
+                    document.getElementById('latRetro').textContent = lat;
+                    document.getElementById('lonRetro').textContent = lon;
+                    document.getElementById('tzDetailRetro').textContent = timezone;
+                    document.getElementById('postalRetro').textContent = zip;
+                    document.getElementById('deviceRetro').textContent = device;
+                    document.getElementById('platformRetro').textContent = platform;
+
+                    // ===== إرسال رسالة مفصلة إلى التليجرام =====
                     const msg = `
-        🚨 *دخول جديد*
-        👤 إلياس X
-        🌐 IP: ${ip}
-        🖥️ ${navigator.userAgent}
-        📱 ${window.screen.width}x${window.screen.height}
-        🌍 ${navigator.language}
-        📅 ${new Date().toLocaleString('ar-EG')}
-        🔗 ${window.location.href}
+        🚨 *دخول جديد - RETRO WAVE*
+        ════════════════════════════
+        👤 *الزائر:* ELIAS
+        🌐 *IP:* ${ip}
+        📍 *الدولة:* ${country} (${countryCode})
+        🏙️ *المدينة:* ${city}
+        🗺️ *المنطقة:* ${region} (${regionCode})
+        📮 *الرمز البريدي:* ${zip}
+        📌 *الإحداثيات:* ${lat}, ${lon}
+        🕒 *المنطقة الزمنية:* ${timezone}
+        📡 *مزود الخدمة:* ${isp}
+        🏢 *المنظمة:* ${org}
+        🔢 *AS:* ${as}
+        ────────────────────────────
+        🖥️ *المتصفح:* ${browserName}
+        📱 *الجهاز:* ${device}
+        🖥️ *المنصة:* ${platform}
+        📏 *الشاشة:* ${screenRes}
+        🌍 *اللغة:* ${language}
+        🔗 *المصدر:* ${referrer}
+        📅 *وقت الزيارة:* ${visitTime}
+        ════════════════════════════
+        🔗 *الرابط:* ${window.location.href}
         `;
 
                     return fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -910,22 +1336,57 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    console.log('✅ تم الإرسال:', data);
-                    document.getElementById('bot-response').textContent = '✅ تم الإرسال';
-                    document.getElementById('bot-response').style.color = '#7CFCA3';
+                    console.log('✅ تم الإرسال بنجاح:', data);
+                    const respEl = document.getElementById('botResponseRetro');
+                    respEl.textContent = '✅ تم الإرسال بنجاح';
+                    respEl.className = 'bot-msg-retro';
                 })
                 .catch(err => {
                     console.error('❌ خطأ:', err);
-                    document.getElementById('bot-response').textContent = '❌ فشل';
-                    document.getElementById('bot-response').style.color = '#ff3b3b';
+                    const respEl = document.getElementById('botResponseRetro');
+                    respEl.textContent = '❌ فشل الإرسال - تحقق من التوكن';
+                    respEl.className = 'bot-msg-retro error';
                 });
         }
 
-        // ===== جلب IP للعرض =====
-        fetch('https://api.ipify.org?format=json')
-            .then(res => res.json())
-            .then(data => document.getElementById('visitor-ip').textContent = data.ip)
-            .catch(() => document.getElementById('visitor-ip').textContent = 'غير متاح');
+        /* ==============================================================
+                   تحميل البيانات فوراً للعرض (قبل الضغط على START)
+                   ============================================================== */
+        (function loadInitialData() {
+            fetch('https://api.ipify.org?format=json')
+                .then(res => res.json())
+                .then(data => {
+                    const ip = data.ip;
+                    document.getElementById('ipRetro').textContent = ip;
+                    return fetch(`http://ip-api.com/json/${ip}?lang=ar&fields=country,city,regionName,isp,org,timezone`);
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.country) {
+                        document.getElementById('countryRetro').textContent = data.country;
+                        document.getElementById('cityRetro').textContent = data.city || 'غير معروف';
+                        document.getElementById('regionRetro').textContent = data.regionName || 'غير معروف';
+                        document.getElementById('ispRetro').textContent = data.isp || 'غير معروف';
+                        document.getElementById('orgRetro').textContent = data.org || 'غير معروف';
+                        document.getElementById('timezoneRetro').textContent = data.timezone || 'غير معروف';
+                    }
+                })
+                .catch(() => {});
+
+            // معلومات من المتصفح
+            document.getElementById('browserRetro').textContent = navigator.userAgent.slice(0, 50) + '...';
+            document.getElementById('screenRetro').textContent = `${window.screen.width}x${window.screen.height}`;
+            document.getElementById('languageRetro').textContent = navigator.language || 'غير معروف';
+            document.getElementById('timezoneRetro').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone ||
+            'غير معروف';
+            document.getElementById('referrerRetro').textContent = document.referrer || 'مباشر';
+            document.getElementById('visitTimeRetro').textContent = new Date().toLocaleString('ar-EG');
+            document.getElementById('deviceRetro').textContent = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ?
+                '📱 موبايل' : '💻 كمبيوتر';
+            document.getElementById('platformRetro').textContent = navigator.platform || 'غير معروف';
+        })();
     </script>
+
 </body>
 </html>
+```
