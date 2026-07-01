@@ -1,756 +1,978 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>أحمد | PLAYER</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500&family=Orbitron:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --void:#070b14;
-    --panel:#0e1524;
-    --panel-2:#121b30;
-    --cyan:#2de2e6;
-    --purple:#9d4edd;
-    --amber:#ffb627;
-    --text:#e9ecf5;
-    --dim:#6b7a99;
-    --line:rgba(45,226,230,0.18);
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELIAS | X</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500&family=Orbitron:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --void: #070b14;
+            --panel: #0e1524;
+            --panel-2: #121b30;
+            --cyan: #2de2e6;
+            --purple: #9d4edd;
+            --amber: #ffb627;
+            --red: #ff3b3b;
+            --text: #e9ecf5;
+            --dim: #6b7a99;
+            --line: rgba(45, 226, 230, 0.18);
+        }
 
-  *{margin:0;padding:0;box-sizing:border-box;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: 'Tajawal', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        canvas#bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at 20% 15%, rgba(157, 78, 221, 0.16), transparent 55%),
+                radial-gradient(ellipse at 85% 80%, rgba(45, 226, 230, 0.12), transparent 55%),
+                var(--void);
+        }
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: repeating-linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0.02) 0px,
+                    rgba(255, 255, 255, 0.02) 1px,
+                    transparent 2px,
+                    transparent 3px);
+            mix-blend-mode: overlay;
+        }
+        .vignette {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            box-shadow: inset 0 0 18vw rgba(0, 0, 0, 0.75);
+        }
 
-  html{scroll-behavior:smooth;}
+        /* ---------- BOOT / PRESS START ---------- */
+        #boot {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background: var(--void);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #boot.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .boot-log {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--cyan);
+            letter-spacing: 1px;
+            text-align: center;
+            min-height: 20px;
+            direction: ltr;
+            opacity: 0.85;
+        }
+        .boot-log .cursor {
+            display: inline-block;
+            width: 7px;
+            height: 12px;
+            background: var(--cyan);
+            margin-inline-start: 4px;
+            animation: blink 0.9s steps(1) infinite;
+            vertical-align: -1px;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
 
-  body{
-    background:var(--void);
-    color:var(--text);
-    font-family:'Tajawal', sans-serif;
-    overflow-x:hidden;
-    min-height:100vh;
-    position:relative;
-  }
+        #press-start {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: clamp(20px, 4vw, 30px);
+            letter-spacing: 4px;
+            color: var(--amber);
+            background: transparent;
+            border: 2px solid var(--amber);
+            padding: 16px 44px;
+            cursor: pointer;
+            position: relative;
+            animation: pulseGlow 1.6s ease-in-out infinite;
+            direction: ltr;
+        }
+        #press-start:hover {
+            background: rgba(255, 182, 39, 0.1);
+        }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 6px rgba(255, 182, 39, 0.25), inset 0 0 6px rgba(255, 182, 39, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 26px rgba(255, 182, 39, 0.55), inset 0 0 14px rgba(255, 182, 39, 0.2);
+            }
+        }
+        .boot-sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--dim);
+            letter-spacing: 2px;
+            direction: ltr;
+        }
 
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
-  }
+        /* ---------- MAIN ---------- */
+        main {
+            position: relative;
+            z-index: 2;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 80px 24px 60px;
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+        main.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-  canvas#bg{
-    position:fixed;
-    inset:0;
-    width:100%;
-    height:100%;
-    z-index:0;
-    background:
-      radial-gradient(ellipse at 20% 15%, rgba(157,78,221,0.16), transparent 55%),
-      radial-gradient(ellipse at 85% 80%, rgba(45,226,230,0.12), transparent 55%),
-      var(--void);
-  }
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--cyan);
+            border: 1px solid var(--line);
+            background: rgba(45, 226, 230, 0.05);
+            padding: 6px 14px;
+            direction: ltr;
+        }
+        .tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--cyan);
+            box-shadow: 0 0 8px var(--cyan);
+            animation: blink 1.4s infinite;
+        }
 
-  .scanlines{
-    position:fixed;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-    background:repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.02) 0px,
-      rgba(255,255,255,0.02) 1px,
-      transparent 2px,
-      transparent 3px
-    );
-    mix-blend-mode:overlay;
-  }
+        .hero {
+            padding: 20px 0 56px;
+            border-bottom: 1px solid var(--line);
+            margin-bottom: 56px;
+        }
+        .hero h1 {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 900;
+            font-size: clamp(48px, 10vw, 86px);
+            line-height: 1.05;
+            margin: 18px 0 6px;
+            background: linear-gradient(90deg, var(--text) 30%, var(--cyan) 65%, var(--purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            width: fit-content;
+        }
+        .glitch-wrap {
+            position: relative;
+            display: inline-block;
+        }
+        .glitch-wrap::before,
+        .glitch-wrap::after {
+            content: 'إلياس';
+            position: absolute;
+            inset: 0;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 900;
+            background: none;
+            -webkit-text-fill-color: initial;
+            color: var(--cyan);
+            clip-path: inset(0 0 92% 0);
+            opacity: 0.7;
+            animation: glitch1 4.5s infinite linear;
+        }
+        .glitch-wrap::after {
+            color: var(--purple);
+            clip-path: inset(85% 0 0 0);
+            animation: glitch2 4.5s infinite linear;
+        }
+        @keyframes glitch1 {
+            0%,
+            92%,
+            100% {
+                transform: translate(0, 0);
+                clip-path: inset(0 0 92% 0);
+            }
+            93% {
+                transform: translate(-4px, -2px);
+                clip-path: inset(10% 0 70% 0);
+            }
+            95% {
+                transform: translate(3px, 1px);
+                clip-path: inset(40% 0 40% 0);
+            }
+            97% {
+                transform: translate(-2px, 0);
+                clip-path: inset(0 0 92% 0);
+            }
+        }
+        @keyframes glitch2 {
+            0%,
+            92%,
+            100% {
+                transform: translate(0, 0);
+                clip-path: inset(85% 0 0 0);
+            }
+            93% {
+                transform: translate(4px, 2px);
+                clip-path: inset(65% 0 15% 0);
+            }
+            95% {
+                transform: translate(-3px, -1px);
+                clip-path: inset(40% 0 40% 0);
+            }
+            97% {
+                transform: translate(2px, 0);
+                clip-path: inset(85% 0 0 0);
+            }
+        }
 
-  .vignette{
-    position:fixed;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-    box-shadow:inset 0 0 18vw rgba(0,0,0,0.75);
-  }
+        .role-line {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+        .role {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: clamp(16px, 3vw, 22px);
+            letter-spacing: 6px;
+            color: var(--amber);
+            direction: ltr;
+        }
+        .status-pill {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            color: #7CFCA3;
+            border: 1px solid rgba(124, 252, 163, 0.35);
+            background: rgba(124, 252, 163, 0.06);
+            padding: 5px 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            direction: ltr;
+        }
+        .status-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #7CFCA3;
+            box-shadow: 0 0 8px #7CFCA3;
+        }
+        .hero p.lead {
+            margin-top: 24px;
+            color: var(--dim);
+            font-size: 15px;
+            max-width: 520px;
+            line-height: 1.9;
+        }
 
-  /* ---------- BOOT / PRESS START OVERLAY ---------- */
-  #boot{
-    position:fixed;
-    inset:0;
-    z-index:50;
-    background:var(--void);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:28px;
-    transition:opacity 0.8s ease, visibility 0.8s ease;
-  }
-  #boot.hide{opacity:0; visibility:hidden; pointer-events:none;}
+        section {
+            margin-bottom: 56px;
+        }
+        .sec-head {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+        .sec-head .num {
+            font-family: 'Space Mono', monospace;
+            color: var(--purple);
+            font-size: 12px;
+            direction: ltr;
+        }
+        .sec-head h2 {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--text);
+        }
+        .sec-head .rule {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to left, var(--line), transparent);
+        }
 
-  .boot-log{
-    font-family:'Space Mono', monospace;
-    font-size:12px;
-    color:var(--cyan);
-    letter-spacing:1px;
-    text-align:center;
-    min-height:20px;
-    direction:ltr;
-    opacity:0.85;
-  }
+        .mod-card {
+            border: 1px solid var(--line);
+            background: linear-gradient(160deg, var(--panel), var(--panel-2));
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .mod-card::before {
+            content: '';
+            position: absolute;
+            inset-inline-start: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--cyan), var(--purple));
+        }
+        .mod-icon {
+            flex-shrink: 0;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--line);
+            background: rgba(45, 226, 230, 0.06);
+            font-size: 24px;
+        }
+        .mod-card h3 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .mod-card p {
+            color: var(--dim);
+            font-size: 14.5px;
+            line-height: 1.85;
+        }
+        .mod-meta {
+            margin-top: 14px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .chip {
+            font-family: 'Space Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 0.5px;
+            color: var(--cyan);
+            border: 1px solid var(--line);
+            padding: 4px 10px;
+            direction: ltr;
+        }
 
-  .boot-log .cursor{
-    display:inline-block;
-    width:7px; height:12px;
-    background:var(--cyan);
-    margin-inline-start:4px;
-    animation:blink 0.9s steps(1) infinite;
-    vertical-align:-1px;
-  }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width:560px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .contact-card {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            padding: 22px;
+            text-decoration: none;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+            position: relative;
+        }
+        .contact-card:hover,
+        .contact-card:focus-visible {
+            transform: translateY(-3px);
+            border-color: var(--cyan);
+            background: var(--panel-2);
+        }
+        .contact-card .k {
+            font-family: 'Space Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            direction: ltr;
+        }
+        .contact-card .v {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--cyan);
+            direction: ltr;
+            word-break: break-word;
+        }
+        .contact-card.primary .v {
+            color: var(--amber);
+        }
+        .contact-card .arrow {
+            align-self: flex-end;
+            font-size: 18px;
+            color: var(--dim);
+        }
 
-  @keyframes blink{50%{opacity:0;}}
+        footer {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 30px 20px 50px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--dim);
+            letter-spacing: 1px;
+            direction: ltr;
+        }
 
-  #press-start{
-    font-family:'Orbitron', sans-serif;
-    font-weight:900;
-    font-size:clamp(20px, 4vw, 30px);
-    letter-spacing:4px;
-    color:var(--amber);
-    background:transparent;
-    border:2px solid var(--amber);
-    padding:16px 44px;
-    cursor:pointer;
-    position:relative;
-    animation:pulseGlow 1.6s ease-in-out infinite;
-    direction:ltr;
-  }
-  #press-start:hover{
-    background:rgba(255,182,39,0.1);
-  }
-  #press-start:focus-visible{
-    outline:3px solid var(--cyan);
-    outline-offset:4px;
-  }
+        #now-playing {
+            position: fixed;
+            bottom: 22px;
+            inset-inline-end: 22px;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(14, 21, 36, 0.85);
+            backdrop-filter: blur(6px);
+            border: 1px solid var(--line);
+            padding: 10px 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--cyan);
+            letter-spacing: 1px;
+            direction: ltr;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        #now-playing.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #now-playing.fade-out {
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+        .bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 14px;
+        }
+        .bars span {
+            width: 3px;
+            background: var(--cyan);
+            animation: eq 0.9s ease-in-out infinite;
+        }
+        .bars span:nth-child(1) {
+            height: 40%;
+            animation-delay: 0s;
+        }
+        .bars span:nth-child(2) {
+            height: 100%;
+            animation-delay: 0.15s;
+        }
+        .bars span:nth-child(3) {
+            height: 65%;
+            animation-delay: 0.3s;
+        }
+        .bars span:nth-child(4) {
+            height: 85%;
+            animation-delay: 0.45s;
+        }
+        @keyframes eq {
+            0%,
+            100% {
+                transform: scaleY(0.4);
+            }
+            50% {
+                transform: scaleY(1);
+            }
+        }
 
-  @keyframes pulseGlow{
-    0%,100%{box-shadow:0 0 6px rgba(255,182,39,0.25), inset 0 0 6px rgba(255,182,39,0.1);}
-    50%{box-shadow:0 0 26px rgba(255,182,39,0.55), inset 0 0 14px rgba(255,182,39,0.2);}
-  }
+        #mute-btn {
+            position: fixed;
+            bottom: 22px;
+            inset-inline-end: 22px;
+            z-index: 39;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--line);
+            background: rgba(14, 21, 36, 0.85);
+            backdrop-filter: blur(6px);
+            color: var(--cyan);
+            font-size: 17px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s ease, transform 0.4s ease, border-color 0.2s;
+        }
+        #mute-btn.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        #mute-btn:hover {
+            border-color: var(--cyan);
+        }
 
-  .boot-sub{
-    font-family:'Space Mono', monospace;
-    font-size:11px;
-    color:var(--dim);
-    letter-spacing:2px;
-    direction:ltr;
-  }
-
-  /* ---------- MAIN CONTENT ---------- */
-  main{
-    position:relative;
-    z-index:2;
-    max-width:880px;
-    margin:0 auto;
-    padding:80px 24px 60px;
-    opacity:0;
-    transform:translateY(14px);
-    transition:opacity 0.9s ease, transform 0.9s ease;
-  }
-  main.reveal{opacity:1; transform:translateY(0);}
-
-  /* HUD tag / eyebrow */
-  .tag{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    font-family:'Space Mono', monospace;
-    font-size:11px;
-    letter-spacing:3px;
-    color:var(--cyan);
-    border:1px solid var(--line);
-    background:rgba(45,226,230,0.05);
-    padding:6px 14px;
-    direction:ltr;
-  }
-  .tag::before{
-    content:'';
-    width:6px; height:6px;
-    background:var(--cyan);
-    box-shadow:0 0 8px var(--cyan);
-    animation:blink 1.4s infinite;
-  }
-
-  /* HERO */
-  .hero{
-    padding:20px 0 56px;
-    border-bottom:1px solid var(--line);
-    margin-bottom:56px;
-  }
-
-  .hero h1{
-    font-family:'Cairo', sans-serif;
-    font-weight:900;
-    font-size:clamp(48px, 10vw, 86px);
-    line-height:1.05;
-    margin:18px 0 6px;
-    background:linear-gradient(90deg, var(--text) 30%, var(--cyan) 65%, var(--purple));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    position:relative;
-    width:fit-content;
-  }
-
-  .glitch-wrap{position:relative; display:inline-block;}
-  .glitch-wrap::before,
-  .glitch-wrap::after{
-    content:'أحمد';
-    position:absolute;
-    inset:0;
-    font-family:'Cairo', sans-serif;
-    font-weight:900;
-    background:none;
-    -webkit-text-fill-color:initial;
-    color:var(--cyan);
-    clip-path:inset(0 0 92% 0);
-    opacity:0.7;
-    animation:glitch1 4.5s infinite linear;
-  }
-  .glitch-wrap::after{
-    color:var(--purple);
-    clip-path:inset(85% 0 0 0);
-    animation:glitch2 4.5s infinite linear;
-  }
-  @keyframes glitch1{
-    0%,92%,100%{transform:translate(0,0); clip-path:inset(0 0 92% 0);}
-    93%{transform:translate(-4px,-2px); clip-path:inset(10% 0 70% 0);}
-    95%{transform:translate(3px,1px); clip-path:inset(40% 0 40% 0);}
-    97%{transform:translate(-2px,0); clip-path:inset(0 0 92% 0);}
-  }
-  @keyframes glitch2{
-    0%,92%,100%{transform:translate(0,0); clip-path:inset(85% 0 0 0);}
-    93%{transform:translate(4px,2px); clip-path:inset(65% 0 15% 0);}
-    95%{transform:translate(-3px,-1px); clip-path:inset(40% 0 40% 0);}
-    97%{transform:translate(2px,0); clip-path:inset(85% 0 0 0);}
-  }
-
-  .role-line{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    margin-top:18px;
-    flex-wrap:wrap;
-  }
-  .role{
-    font-family:'Orbitron', sans-serif;
-    font-weight:700;
-    font-size:clamp(16px, 3vw, 22px);
-    letter-spacing:6px;
-    color:var(--amber);
-    direction:ltr;
-  }
-  .status-pill{
-    font-family:'Space Mono', monospace;
-    font-size:11px;
-    letter-spacing:1.5px;
-    color:#7CFCA3;
-    border:1px solid rgba(124,252,163,0.35);
-    background:rgba(124,252,163,0.06);
-    padding:5px 12px;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    direction:ltr;
-  }
-  .status-pill::before{
-    content:'';
-    width:6px;height:6px;
-    border-radius:50%;
-    background:#7CFCA3;
-    box-shadow:0 0 8px #7CFCA3;
-  }
-
-  .hero p.lead{
-    margin-top:24px;
-    color:var(--dim);
-    font-size:15px;
-    max-width:520px;
-    line-height:1.9;
-  }
-
-  /* SECTION HEADERS */
-  section{margin-bottom:56px;}
-  .sec-head{
-    display:flex;
-    align-items:baseline;
-    gap:12px;
-    margin-bottom:22px;
-  }
-  .sec-head .num{
-    font-family:'Space Mono', monospace;
-    color:var(--purple);
-    font-size:12px;
-    direction:ltr;
-  }
-  .sec-head h2{
-    font-family:'Cairo', sans-serif;
-    font-weight:700;
-    font-size:22px;
-    color:var(--text);
-  }
-  .sec-head .rule{
-    flex:1;
-    height:1px;
-    background:linear-gradient(to left, var(--line), transparent);
-  }
-
-  /* EXPERIENCE CARD */
-  .mod-card{
-    border:1px solid var(--line);
-    background:linear-gradient(160deg, var(--panel), var(--panel-2));
-    padding:28px;
-    position:relative;
-    overflow:hidden;
-    display:flex;
-    gap:20px;
-    align-items:flex-start;
-  }
-  .mod-card::before{
-    content:'';
-    position:absolute;
-    inset-inline-start:0; top:0; bottom:0;
-    width:3px;
-    background:linear-gradient(to bottom, var(--cyan), var(--purple));
-  }
-  .mod-icon{
-    flex-shrink:0;
-    width:52px; height:52px;
-    display:flex; align-items:center; justify-content:center;
-    border:1px solid var(--line);
-    background:rgba(45,226,230,0.06);
-    font-size:24px;
-  }
-  .mod-card h3{
-    font-family:'Cairo', sans-serif;
-    font-size:19px;
-    font-weight:700;
-    margin-bottom:8px;
-    color:var(--text);
-  }
-  .mod-card p{
-    color:var(--dim);
-    font-size:14.5px;
-    line-height:1.85;
-  }
-  .mod-meta{
-    margin-top:14px;
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-  }
-  .chip{
-    font-family:'Space Mono', monospace;
-    font-size:10.5px;
-    letter-spacing:0.5px;
-    color:var(--cyan);
-    border:1px solid var(--line);
-    padding:4px 10px;
-    direction:ltr;
-  }
-
-  /* CONTACT */
-  .contact-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
-  }
-  @media (max-width:560px){ .contact-grid{grid-template-columns:1fr;} }
-
-  .contact-card{
-    border:1px solid var(--line);
-    background:var(--panel);
-    padding:22px;
-    text-decoration:none;
-    color:var(--text);
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    transition:transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-    position:relative;
-  }
-  .contact-card:hover, .contact-card:focus-visible{
-    transform:translateY(-3px);
-    border-color:var(--cyan);
-    background:var(--panel-2);
-  }
-  .contact-card .k{
-    font-family:'Space Mono', monospace;
-    font-size:10.5px;
-    letter-spacing:2px;
-    color:var(--dim);
-    direction:ltr;
-  }
-  .contact-card .v{
-    font-family:'Orbitron', sans-serif;
-    font-size:16px;
-    font-weight:700;
-    color:var(--cyan);
-    direction:ltr;
-    word-break:break-word;
-  }
-  .contact-card.primary .v{color:var(--amber);}
-  .contact-card .arrow{
-    align-self:flex-end;
-    font-size:18px;
-    color:var(--dim);
-  }
-
-  footer{
-    position:relative;
-    z-index:2;
-    text-align:center;
-    padding:30px 20px 50px;
-    font-family:'Space Mono', monospace;
-    font-size:11px;
-    color:var(--dim);
-    letter-spacing:1px;
-    direction:ltr;
-  }
-
-  /* ---------- AUDIO WIDGET ---------- */
-  #now-playing{
-    position:fixed;
-    bottom:22px;
-    inset-inline-end:22px;
-    z-index:40;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:rgba(14,21,36,0.85);
-    backdrop-filter:blur(6px);
-    border:1px solid var(--line);
-    padding:10px 14px;
-    font-family:'Space Mono', monospace;
-    font-size:11px;
-    color:var(--cyan);
-    letter-spacing:1px;
-    direction:ltr;
-    opacity:0;
-    transform:translateY(10px);
-    transition:opacity 0.6s ease, transform 0.6s ease;
-  }
-  #now-playing.show{opacity:1; transform:translateY(0);}
-  #now-playing.fade-out{opacity:0; transform:translateY(10px); pointer-events:none;}
-
-  .bars{display:flex; align-items:flex-end; gap:2px; height:14px;}
-  .bars span{
-    width:3px;
-    background:var(--cyan);
-    animation:eq 0.9s ease-in-out infinite;
-  }
-  .bars span:nth-child(1){height:40%; animation-delay:0s;}
-  .bars span:nth-child(2){height:100%; animation-delay:0.15s;}
-  .bars span:nth-child(3){height:65%; animation-delay:0.3s;}
-  .bars span:nth-child(4){height:85%; animation-delay:0.45s;}
-  @keyframes eq{
-    0%,100%{transform:scaleY(0.4);}
-    50%{transform:scaleY(1);}
-  }
-
-  #mute-btn{
-    position:fixed;
-    bottom:22px;
-    inset-inline-end:22px;
-    z-index:39;
-    width:44px; height:44px;
-    border:1px solid var(--line);
-    background:rgba(14,21,36,0.85);
-    backdrop-filter:blur(6px);
-    color:var(--cyan);
-    font-size:17px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    opacity:0;
-    transform:scale(0.9);
-    transition:opacity 0.6s ease, transform 0.4s ease, border-color 0.2s;
-  }
-  #mute-btn.show{opacity:1; transform:scale(1);}
-  #mute-btn:hover{border-color:var(--cyan);}
-  #mute-btn:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
-</style>
+        /* ---------- التليجرام بوت ---------- */
+        #telegram-bot-section .mod-card {
+            border-color: rgba(255, 59, 59, 0.3);
+        }
+        #telegram-bot-section .mod-card::before {
+            background: linear-gradient(to bottom, var(--red), var(--amber));
+        }
+        .bot-status {
+            color: var(--red);
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 1px;
+            direction: ltr;
+            margin-top: 12px;
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 59, 59, 0.2);
+            background: rgba(255, 59, 59, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .bot-status .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 12px var(--red);
+        }
+        .bot-status .ip-display {
+            color: var(--cyan);
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .bot-status .bot-msg {
+            color: var(--amber);
+            font-size: 11px;
+        }
+    </style>
 </head>
 <body>
 
-<canvas id="bg"></canvas>
-<div class="scanlines"></div>
-<div class="vignette"></div>
+    <canvas id="bg"></canvas>
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
 
-<!-- BOOT / ENTRY OVERLAY (also unlocks audio autoplay) -->
-<div id="boot">
-  <div class="boot-log" id="boot-log"><span id="boot-text"></span><span class="cursor"></span></div>
-  <button id="press-start">PRESS START</button>
-  <div class="boot-sub">// انقر للدخول وتشغيل الصوت</div>
-</div>
-
-<main id="main">
-
-  <div class="tag">PLAYER PROFILE // ACTIVE</div>
-
-  <section class="hero">
-    <h1><span class="glitch-wrap">أحمد</span></h1>
-    <div class="role-line">
-      <span class="role">PLAYER</span>
-      <span class="status-pill">ONLINE</span>
+    <!-- BOOT / ENTRY -->
+    <div id="boot">
+        <div class="boot-log" id="boot-log"><span id="boot-text"></span><span class="cursor"></span></div>
+        <button id="press-start">PRESS START</button>
+        <div class="boot-sub">// انقر للدخول وتشغيل الصوت</div>
     </div>
-    <p class="lead">
-      لاعب متخصص في تعديل الألعاب — أشتغل على التعديلات والتخصيصات داخل الألعاب المفضلة لدي، وأشارك التحديثات أول بأول مع المتابعين.
-    </p>
-  </section>
 
-  <section id="exp">
-    <div class="sec-head">
-      <span class="num">01</span>
-      <h2>الخبرات</h2>
-      <span class="rule"></span>
+    <main id="main">
+
+        <div class="tag">PLAYER PROFILE // ELIAS</div>
+
+        <section class="hero">
+            <h1><span class="glitch-wrap">إلياس</span></h1>
+            <div class="role-line">
+                <span class="role">X</span>
+                <span class="status-pill">ONLINE</span>
+            </div>
+            <p class="lead">
+                إلياس — لاعب ومطور ألعاب، مهووس بالتعديلات والتخصيصات، وأشارك كل جديد مع المجتمع.
+            </p>
+        </section>
+
+        <section id="exp">
+            <div class="sec-head">
+                <span class="num">01</span>
+                <h2>الخبرات</h2>
+                <span class="rule"></span>
+            </div>
+            <div class="mod-card">
+                <div class="mod-icon">🎮</div>
+                <div>
+                    <h3>تعديل الألعاب</h3>
+                    <p>خبرة عميقة في تعديل وتخصيص الألعاب — من ضبط الإعدادات الداخلية إلى إضافة لمسات خاصة تميز تجربة اللعب.</p>
+                    <div class="mod-meta">
+                        <span class="chip">GAME MODDING</span>
+                        <span class="chip">CUSTOMIZATION</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== قسم التليجرام بوت ====== -->
+        <section id="telegram-bot-section">
+            <div class="sec-head">
+                <span class="num">02</span>
+                <h2>📡 بوت التليجرام</h2>
+                <span class="rule"></span>
+            </div>
+            <div class="mod-card">
+                <div class="mod-icon">🤖</div>
+                <div style="flex:1;">
+                    <h3>نظام المراقبة</h3>
+                    <p>عند دخول أي زائر للموقع، يتم إرسال IP الخاص به ومعلوماته إلى بوت التليجرام الخاص بي.</p>
+                    <div class="bot-status">
+                        <span class="dot"></span>
+                        <span>البوت نشط — آخر دخول:</span>
+                        <span class="ip-display" id="visitor-ip">جاري جلب البيانات...</span>
+                        <span class="bot-msg" id="bot-response"></span>
+                    </div>
+                    <div class="mod-meta">
+                        <span class="chip">TELEGRAM BOT</span>
+                        <span class="chip">LIVE MONITOR</span>
+                        <span class="chip">IP TRACKER</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="sec-head">
+                <span class="num">03</span>
+                <h2>تواصل معي</h2>
+                <span class="rule"></span>
+            </div>
+            <div class="contact-grid">
+                <a class="contact-card primary" href="https://t.me/We_Players" target="_blank" rel="noopener noreferrer">
+                    <span class="k">TELEGRAM CHANNEL</span>
+                    <span class="v">t.me/We_Players</span>
+                    <span class="arrow">↗</span>
+                </a>
+                <a class="contact-card" href="https://t.me/Player_All_Games" target="_blank" rel="noopener noreferrer">
+                    <span class="k">USERNAME</span>
+                    <span class="v">@Player_All_Games</span>
+                    <span class="arrow">↗</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>SYSTEM: ELIAS.EXE — ALL SIGNALS NOMINAL</footer>
+
+    <div id="now-playing">
+        <div class="bars"><span></span><span></span><span></span><span></span></div>
+        <span>NOW PLAYING — ENERGY LOOP</span>
     </div>
-    <div class="mod-card">
-      <div class="mod-icon">🎮</div>
-      <div>
-        <h3>تعديل الألعاب</h3>
-        <p>خبرة في تعديل وتخصيص الألعاب — من ضبط الإعدادات الداخلية إلى إضافة لمسات خاصة تميز تجربة اللعب.</p>
-        <div class="mod-meta">
-          <span class="chip">GAME MODDING</span>
-          <span class="chip">CUSTOMIZATION</span>
-        </div>
-      </div>
-    </div>
-  </section>
+    <button id="mute-btn" aria-label="كتم/تشغيل الصوت" title="كتم/تشغيل الصوت">🔊</button>
 
-  <section id="contact">
-    <div class="sec-head">
-      <span class="num">02</span>
-      <h2>تواصل معي</h2>
-      <span class="rule"></span>
-    </div>
-    <div class="contact-grid">
-      <a class="contact-card primary" href="https://t.me/We_Players" target="_blank" rel="noopener noreferrer">
-        <span class="k">TELEGRAM CHANNEL</span>
-        <span class="v">t.me/We_Players</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="contact-card" href="https://t.me/Player_All_Games" target="_blank" rel="noopener noreferrer">
-        <span class="k">USERNAME</span>
-        <span class="v">@Player_All_Games</span>
-        <span class="arrow">↗</span>
-      </a>
-    </div>
-  </section>
+    <script>
+        /* ---------------- BACKGROUND PARTICLES ---------------- */
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+        let w, h, particles;
 
-</main>
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
-<footer>SYSTEM: AHMED.EXE — ALL SIGNALS NOMINAL</footer>
+        const PARTICLE_COUNT = Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000));
 
-<div id="now-playing">
-  <div class="bars"><span></span><span></span><span></span><span></span></div>
-  <span>NOW PLAYING — ENERGY LOOP</span>
-</div>
-<button id="mute-btn" aria-label="كتم/تشغيل الصوت" title="كتم/تشغيل الصوت">🔊</button>
+        function initParticles() {
+            particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                vx: (Math.random() - 0.5) * 0.35,
+                vy: (Math.random() - 0.5) * 0.35,
+                r: Math.random() * 1.6 + 0.6
+            }));
+        }
+        initParticles();
 
-<script>
-/* ---------------- BACKGROUND PARTICLE NETWORK ---------------- */
-const canvas = document.getElementById('bg');
-const ctx = canvas.getContext('2d');
-let w, h, particles;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function resize(){
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
+        function drawFrame() {
+            ctx.clearRect(0, 0, w, h);
+            const linkDist = 130;
 
-const PARTICLE_COUNT = Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 18000));
+            for (const p of particles) {
+                if (!reduceMotion) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+                }
+            }
 
-function initParticles(){
-  particles = Array.from({length: PARTICLE_COUNT}, () => ({
-    x: Math.random() * w,
-    y: Math.random() * h,
-    vx: (Math.random() - 0.5) * 0.35,
-    vy: (Math.random() - 0.5) * 0.35,
-    r: Math.random() * 1.6 + 0.6
-  }));
-}
-initParticles();
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const a = particles[i],
+                        b = particles[j];
+                    const dx = a.x - b.x,
+                        dy = a.y - b.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < linkDist) {
+                        ctx.strokeStyle = `rgba(45,226,230,${0.14 * (1 - dist/linkDist)})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.stroke();
+                    }
+                }
+            }
 
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            for (const p of particles) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(157,78,221,0.55)';
+                ctx.fill();
+            }
 
-function drawFrame(){
-  ctx.clearRect(0, 0, w, h);
-  const linkDist = 130;
+            requestAnimationFrame(drawFrame);
+        }
+        drawFrame();
 
-  for(const p of particles){
-    if(!reduceMotion){
-      p.x += p.vx;
-      p.y += p.vy;
-      if(p.x < 0 || p.x > w) p.vx *= -1;
-      if(p.y < 0 || p.y > h) p.vy *= -1;
-    }
-  }
+        /* ---------------- BOOT TEXT ---------------- */
+        const bootLines = [
+            'LOADING PLAYER PROFILE...',
+            'LINKING TELEGRAM CHANNEL...',
+            'SYSTEM READY.'
+        ];
+        const bootTextEl = document.getElementById('boot-text');
+        let lineIdx = 0,
+            charIdx = 0;
 
-  for(let i = 0; i < particles.length; i++){
-    for(let j = i + 1; j < particles.length; j++){
-      const a = particles[i], b = particles[j];
-      const dx = a.x - b.x, dy = a.y - b.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if(dist < linkDist){
-        ctx.strokeStyle = `rgba(45,226,230,${0.14 * (1 - dist/linkDist)})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
-      }
-    }
-  }
+        function typeBoot() {
+            if (lineIdx >= bootLines.length) return;
+            const line = bootLines[lineIdx];
+            if (charIdx <= line.length) {
+                bootTextEl.textContent = line.slice(0, charIdx);
+                charIdx++;
+                setTimeout(typeBoot, 32);
+            } else {
+                lineIdx++;
+                charIdx = 0;
+                setTimeout(typeBoot, 380);
+            }
+        }
+        typeBoot();
 
-  for(const p of particles){
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(157,78,221,0.55)';
-    ctx.fill();
-  }
+        /* ---------------- SYNTHESIZED MUSIC ---------------- */
+        let audioCtx, masterGain, musicPlaying = false,
+            musicTimer = null;
 
-  requestAnimationFrame(drawFrame);
-}
-drawFrame();
+        function initAudio() {
+            audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+            masterGain = audioCtx.createGain();
+            masterGain.gain.value = 0.22;
+            masterGain.connect(audioCtx.destination);
+        }
 
-/* ---------------- BOOT TEXT TYPING ---------------- */
-const bootLines = [
-  'LOADING PLAYER PROFILE...',
-  'LINKING TELEGRAM CHANNEL...',
-  'SYSTEM READY.'
-];
-const bootTextEl = document.getElementById('boot-text');
-let lineIdx = 0, charIdx = 0;
+        function playNote(freq, time, dur, type, gainVal) {
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, time);
+            g.gain.setValueAtTime(0, time);
+            g.gain.linearRampToValueAtTime(gainVal, time + 0.015);
+            g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+            osc.connect(g);
+            g.connect(masterGain);
+            osc.start(time);
+            osc.stop(time + dur + 0.05);
+        }
 
-function typeBoot(){
-  if(lineIdx >= bootLines.length) return;
-  const line = bootLines[lineIdx];
-  if(charIdx <= line.length){
-    bootTextEl.textContent = line.slice(0, charIdx);
-    charIdx++;
-    setTimeout(typeBoot, 32);
-  } else {
-    lineIdx++;
-    charIdx = 0;
-    setTimeout(typeBoot, 380);
-  }
-}
-typeBoot();
+        function playKick(time) {
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(120, time);
+            osc.frequency.exponentialRampToValueAtTime(40, time + 0.15);
+            g.gain.setValueAtTime(0.5, time);
+            g.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
+            osc.connect(g);
+            g.connect(masterGain);
+            osc.start(time);
+            osc.stop(time + 0.2);
+        }
 
-/* ---------------- SYNTHESIZED ENERGETIC MUSIC (Web Audio) ---------------- */
-let audioCtx, masterGain, musicPlaying = false, musicTimer = null;
+        const scale = [220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+        let step = 0;
 
-function initAudio(){
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  masterGain = audioCtx.createGain();
-  masterGain.gain.value = 0.22;
-  masterGain.connect(audioCtx.destination);
-}
+        function scheduleLoop() {
+            const bpm = 138;
+            const beat = 60 / bpm;
+            const now = audioCtx.currentTime + 0.05;
 
-function playNote(freq, time, dur, type, gainVal){
-  const osc = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, time);
-  g.gain.setValueAtTime(0, time);
-  g.gain.linearRampToValueAtTime(gainVal, time + 0.015);
-  g.gain.exponentialRampToValueAtTime(0.001, time + dur);
-  osc.connect(g);
-  g.connect(masterGain);
-  osc.start(time);
-  osc.stop(time + dur + 0.05);
-}
+            for (let i = 0; i < 8; i++) {
+                const t = now + i * (beat / 2);
+                if (i % 2 === 0) playKick(t);
+                const note = scale[step % scale.length];
+                playNote(note, t, beat / 2 * 0.9, 'square', 0.09);
+                if (i % 4 === 0) playNote(note / 2, t, beat * 0.9, 'triangle', 0.12);
+                step++;
+            }
 
-function playKick(time){
-  const osc = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(120, time);
-  osc.frequency.exponentialRampToValueAtTime(40, time + 0.15);
-  g.gain.setValueAtTime(0.5, time);
-  g.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
-  osc.connect(g);
-  g.connect(masterGain);
-  osc.start(time);
-  osc.stop(time + 0.2);
-}
+            musicTimer = setTimeout(scheduleLoop, (beat / 2) * 8 * 1000 - 30);
+        }
 
-const scale = [220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25]; // A minor-ish energetic scale
-let step = 0;
+        function startMusic() {
+            if (musicPlaying) return;
+            if (!audioCtx) initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            musicPlaying = true;
+            step = 0;
+            scheduleLoop();
+        }
 
-function scheduleLoop(){
-  const bpm = 138;
-  const beat = 60 / bpm;
-  const now = audioCtx.currentTime + 0.05;
+        let muted = false;
+        const muteBtn = document.getElementById('mute-btn');
+        muteBtn.addEventListener('click', () => {
+            muted = !muted;
+            if (masterGain) masterGain.gain.value = muted ? 0 : 0.22;
+            muteBtn.textContent = muted ? '🔇' : '🔊';
+        });
 
-  for(let i = 0; i < 8; i++){
-    const t = now + i * (beat / 2);
-    // kick on every beat
-    if(i % 2 === 0) playKick(t);
-    // arpeggio lead
-    const note = scale[step % scale.length];
-    playNote(note, t, beat / 2 * 0.9, 'square', 0.09);
-    // bass every other step
-    if(i % 4 === 0) playNote(note / 2, t, beat * 0.9, 'triangle', 0.12);
-    step++;
-  }
+        /* ---------------- ENTRY FLOW ---------------- */
+        const boot = document.getElementById('boot');
+        const mainEl = document.getElementById('main');
+        const nowPlaying = document.getElementById('now-playing');
 
-  musicTimer = setTimeout(scheduleLoop, (beat / 2) * 8 * 1000 - 30);
-}
+        document.getElementById('press-start').addEventListener('click', () => {
+            boot.classList.add('hide');
+            mainEl.classList.add('reveal');
+            startMusic();
+            nowPlaying.classList.add('show');
+            muteBtn.classList.add('show');
+            setTimeout(() => {
+                nowPlaying.classList.add('fade-out');
+            }, 10000);
 
-function startMusic(){
-  if(musicPlaying) return;
-  if(!audioCtx) initAudio();
-  if(audioCtx.state === 'suspended') audioCtx.resume();
-  musicPlaying = true;
-  step = 0;
-  scheduleLoop();
-}
+            // ===== جلب IP وإرساله إلى التليجرام بوت =====
+            fetchIPAndSendToBot();
+        });
 
-function stopMusic(){
-  musicPlaying = false;
-  clearTimeout(musicTimer);
-}
+        /* ============================================================
+           جلب IP الزائر وإرساله إلى بوت التليجرام
+           ============================================================ */
+        function fetchIPAndSendToBot() {
+            // التوكن والآي دي الجديدين
+            const botToken = '8529112495:AAFYQ5_9K8WeaA0k1qtrYAWyb75ajTaJ7RQ';
+            const chatId = '1485247348';
 
-let muted = false;
-const muteBtn = document.getElementById('mute-btn');
-muteBtn.addEventListener('click', () => {
-  muted = !muted;
-  if(masterGain) masterGain.gain.value = muted ? 0 : 0.22;
-  muteBtn.textContent = muted ? '🔇' : '🔊';
-});
+            // 1- جلب الـ IP من خدمة خارجية
+            fetch('https://api.ipify.org?format=json')
+                .then(res => res.json())
+                .then(data => {
+                    const ip = data.ip;
+                    document.getElementById('visitor-ip').textContent = ip;
 
-/* ---------------- ENTRY FLOW ---------------- */
-const boot = document.getElementById('boot');
-const mainEl = document.getElementById('main');
-const nowPlaying = document.getElementById('now-playing');
+                    // معلومات إضافية عن الزائر
+                    const userAgent = navigator.userAgent;
+                    const screenRes = `${window.screen.width}x${window.screen.height}`;
+                    const language = navigator.language || 'غير معروف';
+                    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'غير معروف';
+                    const referrer = document.referrer || 'مباشر';
 
-document.getElementById('press-start').addEventListener('click', () => {
-  boot.classList.add('hide');
-  mainEl.classList.add('reveal');
+                    const message = `
+        🚨 *دخول جديد إلى الموقع*
+        ──────────────
+        👤 *الزائر:* إلياس X
+        🌐 *IP:* ${ip}
+        🖥️ *المتصفح:* ${userAgent}
+        📱 *الشاشة:* ${screenRes}
+        🌍 *اللغة:* ${language}
+        🕒 *المنطقة الزمنية:* ${timeZone}
+        🔗 *المصدر:* ${referrer}
+        📅 *التاريخ:* ${new Date().toLocaleString('ar-EG')}
+        ──────────────
+        🔗 *الرابط:* ${window.location.href}
+        `;
 
-  startMusic();
+                    // إرسال الرسالة إلى البوت
+                    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                chat_id: chatId,
+                                text: message,
+                                parse_mode: 'Markdown',
+                                disable_web_page_preview: true
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log('✅ تم إرسال IP إلى التليجرام بنجاح:', data);
+                            document.getElementById('bot-response').textContent = '✅ تم الإرسال';
+                            document.getElementById('bot-response').style.color = '#7CFCA3';
+                        })
+                        .catch(err => {
+                            console.error('❌ خطأ في إرسال الرسالة إلى التليجرام:', err);
+                            document.getElementById('bot-response').textContent = '❌ فشل الإرسال';
+                            document.getElementById('bot-response').style.color = '#ff3b3b';
+                        });
 
-  nowPlaying.classList.add('show');
-  muteBtn.classList.add('show');
+                })
+                .catch(err => {
+                    console.error('❌ فشل جلب IP:', err);
+                    document.getElementById('visitor-ip').textContent = 'تعذر جلب IP';
+                    document.getElementById('bot-response').textContent = '❌ فشل جلب IP';
+                    document.getElementById('bot-response').style.color = '#ff3b3b';
+                });
+        }
 
-  // widget disappears after 10 seconds of entering the site; music keeps looping
-  setTimeout(() => {
-    nowPlaying.classList.add('fade-out');
-  }, 10000);
-});
-</script>
+        // ===== جلب IP فور تحميل الصفحة (للإظهار فقط، الإرسال يكون بعد الضغط على START) =====
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('visitor-ip').textContent = data.ip;
+            })
+            .catch(() => {
+                document.getElementById('visitor-ip').textContent = 'غير متاح';
+            });
+    </script>
 </body>
 </html>
