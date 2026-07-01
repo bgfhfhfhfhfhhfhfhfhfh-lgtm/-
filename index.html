@@ -37,13 +37,7 @@
             min-height: 100vh;
             position: relative;
         }
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
+
         canvas#bg {
             position: fixed;
             inset: 0;
@@ -74,7 +68,7 @@
             box-shadow: inset 0 0 18vw rgba(0, 0, 0, 0.75);
         }
 
-        /* ---------- BOOT / PRESS START ---------- */
+        /* BOOT */
         #boot {
             position: fixed;
             inset: 0;
@@ -151,7 +145,7 @@
             direction: ltr;
         }
 
-        /* ---------- MAIN ---------- */
+        /* MAIN */
         main {
             position: relative;
             z-index: 2;
@@ -464,6 +458,48 @@
             direction: ltr;
         }
 
+        /* بوت التليجرام */
+        #telegram-bot-section .mod-card {
+            border-color: rgba(255, 59, 59, 0.3);
+        }
+        #telegram-bot-section .mod-card::before {
+            background: linear-gradient(to bottom, var(--red), var(--amber));
+        }
+        .bot-status {
+            color: var(--red);
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 1px;
+            direction: ltr;
+            margin-top: 12px;
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 59, 59, 0.2);
+            background: rgba(255, 59, 59, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .bot-status .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 12px var(--red);
+        }
+        .bot-status .ip-display {
+            color: var(--cyan);
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .bot-status .bot-msg {
+            color: var(--amber);
+            font-size: 11px;
+        }
+
+        /* Audio widget */
         #now-playing {
             position: fixed;
             bottom: 22px;
@@ -558,47 +594,6 @@
         #mute-btn:hover {
             border-color: var(--cyan);
         }
-
-        /* ---------- التليجرام بوت ---------- */
-        #telegram-bot-section .mod-card {
-            border-color: rgba(255, 59, 59, 0.3);
-        }
-        #telegram-bot-section .mod-card::before {
-            background: linear-gradient(to bottom, var(--red), var(--amber));
-        }
-        .bot-status {
-            color: var(--red);
-            font-family: 'Space Mono', monospace;
-            font-size: 12px;
-            letter-spacing: 1px;
-            direction: ltr;
-            margin-top: 12px;
-            padding: 10px 14px;
-            border: 1px solid rgba(255, 59, 59, 0.2);
-            background: rgba(255, 59, 59, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .bot-status .dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: var(--red);
-            border-radius: 50%;
-            animation: blink 1s infinite;
-            box-shadow: 0 0 12px var(--red);
-        }
-        .bot-status .ip-display {
-            color: var(--cyan);
-            font-weight: 700;
-            font-size: 14px;
-        }
-        .bot-status .bot-msg {
-            color: var(--amber);
-            font-size: 11px;
-        }
     </style>
 </head>
 <body>
@@ -607,15 +602,14 @@
     <div class="scanlines"></div>
     <div class="vignette"></div>
 
-    <!-- BOOT / ENTRY -->
+    <!-- BOOT -->
     <div id="boot">
         <div class="boot-log" id="boot-log"><span id="boot-text"></span><span class="cursor"></span></div>
         <button id="press-start">PRESS START</button>
-        <div class="boot-sub">// انقر للدخول وتشغيل الصوت</div>
+        <div class="boot-sub">// انقر للدخول</div>
     </div>
 
     <main id="main">
-
         <div class="tag">PLAYER PROFILE // ELIAS</div>
 
         <section class="hero">
@@ -624,9 +618,7 @@
                 <span class="role">X</span>
                 <span class="status-pill">ONLINE</span>
             </div>
-            <p class="lead">
-                إلياس — لاعب ومطور ألعاب، مهووس بالتعديلات والتخصيصات، وأشارك كل جديد مع المجتمع.
-            </p>
+            <p class="lead">إلياس — لاعب ومطور ألعاب، مهووس بالتعديلات والتخصيصات.</p>
         </section>
 
         <section id="exp">
@@ -639,7 +631,7 @@
                 <div class="mod-icon">🎮</div>
                 <div>
                     <h3>تعديل الألعاب</h3>
-                    <p>خبرة عميقة في تعديل وتخصيص الألعاب — من ضبط الإعدادات الداخلية إلى إضافة لمسات خاصة تميز تجربة اللعب.</p>
+                    <p>خبرة في تعديل وتخصيص الألعاب — من ضبط الإعدادات إلى إضافة لمسات خاصة.</p>
                     <div class="mod-meta">
                         <span class="chip">GAME MODDING</span>
                         <span class="chip">CUSTOMIZATION</span>
@@ -648,7 +640,7 @@
             </div>
         </section>
 
-        <!-- ====== قسم التليجرام بوت ====== -->
+        <!-- بوت التليجرام -->
         <section id="telegram-bot-section">
             <div class="sec-head">
                 <span class="num">02</span>
@@ -659,16 +651,15 @@
                 <div class="mod-icon">🤖</div>
                 <div style="flex:1;">
                     <h3>نظام المراقبة</h3>
-                    <p>عند دخول أي زائر للموقع، يتم إرسال IP الخاص به ومعلوماته إلى بوت التليجرام الخاص بي.</p>
+                    <p>عند الدخول يتم إرسال IP والمعلومات إلى بوت التليجرام.</p>
                     <div class="bot-status">
                         <span class="dot"></span>
-                        <span>البوت نشط — آخر دخول:</span>
-                        <span class="ip-display" id="visitor-ip">جاري جلب البيانات...</span>
+                        <span>الحالة:</span>
+                        <span class="ip-display" id="visitor-ip">جاري الجلب...</span>
                         <span class="bot-msg" id="bot-response"></span>
                     </div>
                     <div class="mod-meta">
                         <span class="chip">TELEGRAM BOT</span>
-                        <span class="chip">LIVE MONITOR</span>
                         <span class="chip">IP TRACKER</span>
                     </div>
                 </div>
@@ -682,31 +673,30 @@
                 <span class="rule"></span>
             </div>
             <div class="contact-grid">
-                <a class="contact-card primary" href="https://t.me/We_Players" target="_blank" rel="noopener noreferrer">
-                    <span class="k">TELEGRAM CHANNEL</span>
+                <a class="contact-card primary" href="https://t.me/We_Players" target="_blank">
+                    <span class="k">TELEGRAM</span>
                     <span class="v">t.me/We_Players</span>
                     <span class="arrow">↗</span>
                 </a>
-                <a class="contact-card" href="https://t.me/Player_All_Games" target="_blank" rel="noopener noreferrer">
+                <a class="contact-card" href="https://t.me/Player_All_Games" target="_blank">
                     <span class="k">USERNAME</span>
                     <span class="v">@Player_All_Games</span>
                     <span class="arrow">↗</span>
                 </a>
             </div>
         </section>
-
     </main>
 
-    <footer>SYSTEM: ELIAS.EXE — ALL SIGNALS NOMINAL</footer>
+    <footer>ELIAS.EXE — ALL SIGNALS NOMINAL</footer>
 
     <div id="now-playing">
         <div class="bars"><span></span><span></span><span></span><span></span></div>
-        <span>NOW PLAYING — ENERGY LOOP</span>
+        <span>NOW PLAYING</span>
     </div>
-    <button id="mute-btn" aria-label="كتم/تشغيل الصوت" title="كتم/تشغيل الصوت">🔊</button>
+    <button id="mute-btn">🔊</button>
 
     <script>
-        /* ---------------- BACKGROUND PARTICLES ---------------- */
+        // ===== خلفية متحركة =====
         const canvas = document.getElementById('bg');
         const ctx = canvas.getContext('2d');
         let w, h, particles;
@@ -731,19 +721,15 @@
         }
         initParticles();
 
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
         function drawFrame() {
             ctx.clearRect(0, 0, w, h);
             const linkDist = 130;
 
             for (const p of particles) {
-                if (!reduceMotion) {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    if (p.x < 0 || p.x > w) p.vx *= -1;
-                    if (p.y < 0 || p.y > h) p.vy *= -1;
-                }
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > w) p.vx *= -1;
+                if (p.y < 0 || p.y > h) p.vy *= -1;
             }
 
             for (let i = 0; i < particles.length; i++) {
@@ -775,12 +761,8 @@
         }
         drawFrame();
 
-        /* ---------------- BOOT TEXT ---------------- */
-        const bootLines = [
-            'LOADING PLAYER PROFILE...',
-            'LINKING TELEGRAM CHANNEL...',
-            'SYSTEM READY.'
-        ];
+        // ===== BOOT TEXT =====
+        const bootLines = ['LOADING...', 'LINKING TELEGRAM...', 'READY.'];
         const bootTextEl = document.getElementById('boot-text');
         let lineIdx = 0,
             charIdx = 0;
@@ -800,7 +782,7 @@
         }
         typeBoot();
 
-        /* ---------------- SYNTHESIZED MUSIC ---------------- */
+        // ===== موسيقى =====
         let audioCtx, masterGain, musicPlaying = false,
             musicTimer = null;
 
@@ -876,7 +858,7 @@
             muteBtn.textContent = muted ? '🔇' : '🔊';
         });
 
-        /* ---------------- ENTRY FLOW ---------------- */
+        // ===== ENTRY =====
         const boot = document.getElementById('boot');
         const mainEl = document.getElementById('main');
         const nowPlaying = document.getElementById('now-playing');
@@ -887,92 +869,63 @@
             startMusic();
             nowPlaying.classList.add('show');
             muteBtn.classList.add('show');
-            setTimeout(() => {
-                nowPlaying.classList.add('fade-out');
-            }, 10000);
+            setTimeout(() => nowPlaying.classList.add('fade-out'), 10000);
 
-            // ===== جلب IP وإرساله إلى التليجرام بوت =====
-            fetchIPAndSendToBot();
+            // إرسال IP إلى البوت
+            sendToBot();
         });
 
-        /* ============================================================
-           جلب IP الزائر وإرساله إلى بوت التليجرام
-           ============================================================ */
-        function fetchIPAndSendToBot() {
-            // التوكن والآي دي الجديدين
+        // ===== إرسال إلى بوت التليجرام =====
+        function sendToBot() {
             const botToken = '8529112495:AAFYQ5_9K8WeaA0k1qtrYAWyb75ajTaJ7RQ';
             const chatId = '1485247348';
 
-            // 1- جلب الـ IP من خدمة خارجية
             fetch('https://api.ipify.org?format=json')
                 .then(res => res.json())
                 .then(data => {
                     const ip = data.ip;
                     document.getElementById('visitor-ip').textContent = ip;
 
-                    // معلومات إضافية عن الزائر
-                    const userAgent = navigator.userAgent;
-                    const screenRes = `${window.screen.width}x${window.screen.height}`;
-                    const language = navigator.language || 'غير معروف';
-                    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'غير معروف';
-                    const referrer = document.referrer || 'مباشر';
-
-                    const message = `
-        🚨 *دخول جديد إلى الموقع*
-        ──────────────
-        👤 *الزائر:* إلياس X
-        🌐 *IP:* ${ip}
-        🖥️ *المتصفح:* ${userAgent}
-        📱 *الشاشة:* ${screenRes}
-        🌍 *اللغة:* ${language}
-        🕒 *المنطقة الزمنية:* ${timeZone}
-        🔗 *المصدر:* ${referrer}
-        📅 *التاريخ:* ${new Date().toLocaleString('ar-EG')}
-        ──────────────
-        🔗 *الرابط:* ${window.location.href}
+                    const msg = `
+        🚨 *دخول جديد*
+        👤 إلياس X
+        🌐 IP: ${ip}
+        🖥️ ${navigator.userAgent}
+        📱 ${window.screen.width}x${window.screen.height}
+        🌍 ${navigator.language}
+        📅 ${new Date().toLocaleString('ar-EG')}
+        🔗 ${window.location.href}
         `;
 
-                    // إرسال الرسالة إلى البوت
-                    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                chat_id: chatId,
-                                text: message,
-                                parse_mode: 'Markdown',
-                                disable_web_page_preview: true
-                            })
+                    return fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: msg,
+                            parse_mode: 'Markdown',
+                            disable_web_page_preview: true
                         })
-                        .then(res => res.json())
-                        .then(data => {
-                            console.log('✅ تم إرسال IP إلى التليجرام بنجاح:', data);
-                            document.getElementById('bot-response').textContent = '✅ تم الإرسال';
-                            document.getElementById('bot-response').style.color = '#7CFCA3';
-                        })
-                        .catch(err => {
-                            console.error('❌ خطأ في إرسال الرسالة إلى التليجرام:', err);
-                            document.getElementById('bot-response').textContent = '❌ فشل الإرسال';
-                            document.getElementById('bot-response').style.color = '#ff3b3b';
-                        });
-
+                    });
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log('✅ تم الإرسال:', data);
+                    document.getElementById('bot-response').textContent = '✅ تم الإرسال';
+                    document.getElementById('bot-response').style.color = '#7CFCA3';
                 })
                 .catch(err => {
-                    console.error('❌ فشل جلب IP:', err);
-                    document.getElementById('visitor-ip').textContent = 'تعذر جلب IP';
-                    document.getElementById('bot-response').textContent = '❌ فشل جلب IP';
+                    console.error('❌ خطأ:', err);
+                    document.getElementById('bot-response').textContent = '❌ فشل';
                     document.getElementById('bot-response').style.color = '#ff3b3b';
                 });
         }
 
-        // ===== جلب IP فور تحميل الصفحة (للإظهار فقط، الإرسال يكون بعد الضغط على START) =====
+        // ===== جلب IP للعرض =====
         fetch('https://api.ipify.org?format=json')
             .then(res => res.json())
-            .then(data => {
-                document.getElementById('visitor-ip').textContent = data.ip;
-            })
-            .catch(() => {
-                document.getElementById('visitor-ip').textContent = 'غير متاح';
-            });
+            .then(data => document.getElementById('visitor-ip').textContent = data.ip)
+            .catch(() => document.getElementById('visitor-ip').textContent = 'غير متاح');
     </script>
 </body>
 </html>
